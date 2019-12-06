@@ -44,12 +44,13 @@ public class HelloMessageListener {
        // makeMessageToFailAndGoBackToTheQueue();
     }
 
-    //Receive and reply to.
+    //Receive and reply to. This method show how to use spring message as well as JMS.
+    // The good part os using Spring message is that it provides an abstraction to JMS which allows easily switching
     @JmsListener(destination = JmsConfig.MY_SEND_RCV_QUEUE)
     public void listenForHello(
             @Payload HelloWorldMessage helloWorldMessage,
             @Headers MessageHeaders headers,
-            Message message) throws JMSException {
+            Message message, org.springframework.messaging.Message springMessage) throws JMSException {
 
         HelloWorldMessage payloadMsg = HelloWorldMessage
                 .builder()
@@ -59,6 +60,9 @@ public class HelloMessageListener {
 
         //reply to the replyTo header
         jmsTemplate.convertAndSend(message.getJMSReplyTo(), payloadMsg);
+
+        //example to use Spring Message type
+        // jmsTemplate.convertAndSend((Destination) springMessage.getHeaders().get("jms_replyTo"), "got it!");
 
     }
 
