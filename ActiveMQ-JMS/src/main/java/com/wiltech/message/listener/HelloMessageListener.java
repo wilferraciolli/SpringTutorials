@@ -6,9 +6,13 @@
  */
 package com.wiltech.message.listener;
 
+import java.util.UUID;
+
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -18,8 +22,13 @@ import org.springframework.stereotype.Component;
 import com.wiltech.message.config.JmsConfig;
 import com.wiltech.message.model.HelloWorldMessage;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class HelloMessageListener {
+
+    private final JmsTemplate jmsTemplate;
 
     @JmsListener(destination = JmsConfig.MY_QUEUE)
     public void listen(
@@ -27,12 +36,30 @@ public class HelloMessageListener {
             @Headers MessageHeaders headers,
             Message message) {
 
-        System.out.println("Got the message");
+      //  System.out.println("Got the message");
 
-        System.out.println(helloWorldMessage);
+       // System.out.println(helloWorldMessage);
 
         // throw exception to see the message being bounce back, this allows to test transaction and delivery count by re-delivering.
        // makeMessageToFailAndGoBackToTheQueue();
+    }
+
+    //Receive and reply to.
+    @JmsListener(destination = JmsConfig.MY_SEND_RCV_QUEUE)
+    public void listenForHello(
+            @Payload HelloWorldMessage helloWorldMessage,
+            @Headers MessageHeaders headers,
+            Message message) throws JMSException {
+
+        HelloWorldMessage payloadMsg = HelloWorldMessage
+                .builder()
+                .id(UUID.randomUUID())
+                .message("World!!")
+                .build();
+
+        //reply to the replyTo header
+        jmsTemplate.convertAndSend(message.getJMSReplyTo(), payloadMsg);
+
     }
 
     private void makeMessageToFailAndGoBackToTheQueue() {
