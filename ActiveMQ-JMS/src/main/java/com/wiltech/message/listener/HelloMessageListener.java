@@ -30,5 +30,12 @@ public class HelloMessageListener {
         System.out.println("Got the message");
 
         System.out.println(helloWorldMessage);
+
+        // throw exception to see the message being bounce back, this allows to test transaction and delivery count by re-delivering.
+       // makeMessageToFailAndGoBackToTheQueue();
+    }
+
+    private void makeMessageToFailAndGoBackToTheQueue() {
+        throw new RuntimeException();
     }
 }
