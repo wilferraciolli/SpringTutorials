@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HelloSender {
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+//    @Autowired
+    private final JmsTemplate jmsTemplate;
 
     @Scheduled(fixedRate = 2000)
     public void sendMessage(){

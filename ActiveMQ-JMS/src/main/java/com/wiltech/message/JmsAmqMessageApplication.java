@@ -18,6 +18,8 @@ public class JmsAmqMessageApplication {
                 .setSecurityEnabled(false)
                 .addAcceptorConfiguration("invm", "vm://0"));
 
+        server.start();
+
         SpringApplication.run(JmsAmqMessageApplication.class, args);
     }
 
