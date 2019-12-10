@@ -10,3 +10,6 @@ SchedulerQuartz/mvnw.cmd
 Spring JPa microservices JWT/SecondStatistics/mvnw
 Spring JPa microservices JWT/SecondStatistics/mvnw.cmd
 Spring JPa microservices JWT/Spring JAP ToDo App/mvnw
+RabbitMQ-queue/.mvn/
+RabbitMQ-queue/mvnw
+RabbitMQ-queue/mvnw.cmd
