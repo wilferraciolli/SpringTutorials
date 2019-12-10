@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = "com.wiltech.activemq")
 @Import({MessagingConfiguration.class})
 public class AppConfig {
+
 }

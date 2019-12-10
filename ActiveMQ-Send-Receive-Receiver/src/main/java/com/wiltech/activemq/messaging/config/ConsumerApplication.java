@@ -1,12 +1,10 @@
-package com.wiltech.activemq;
+package com.wiltech.activemq.messaging.config;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-
-import com.wiltech.activemq.messaging.config.AppConfig;
 
 public class ConsumerApplication {
 

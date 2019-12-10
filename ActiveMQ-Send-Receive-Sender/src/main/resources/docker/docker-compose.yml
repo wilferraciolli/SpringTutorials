@@ -8,5 +8,5 @@ services:
       - "8161:8161"
       - "61616:61616"
     environment:
-      - ARTEMIS_USERNAME=admin
-      - ARTEMIS_PASSWORD=admin
+      ARTEMIS_USERNAME: admin
+      ARTEMIS_PASSWORD: =admin
