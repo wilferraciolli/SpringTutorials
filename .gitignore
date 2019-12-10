@@ -13,3 +13,7 @@ Spring JPa microservices JWT/Spring JAP ToDo App/mvnw
 RabbitMQ-queue/.mvn/
 RabbitMQ-queue/mvnw
 RabbitMQ-queue/mvnw.cmd
+ActiveMQ-Send-Receive/mvnw
+ActiveMQ-Send-Receive/mvnw.cmd
+ActiveMQ-Send-Receive/.mvn/wrapper/maven-wrapper.jar
+ActiveMQ-Send-Receive/.mvn/
