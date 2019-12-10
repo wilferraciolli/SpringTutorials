@@ -1,23 +1,23 @@
 package com.wiltech.rabbitmqqueue.config;
 
+import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.ExchangeBuilder;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
+
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.core.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
-
-import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * The type Rabbit config. Defines configuration for the RabiitMQ.
@@ -29,6 +29,7 @@ public class RabbitConfig implements RabbitListenerConfigurer {
 
     public static final String QUEUE_ORDERS = "orders-queue";
     public static final String EXCHANGE_ORDERS = "orders-exchange";
+    public static final String QUEUE_DEAD_ORDERS = "dead-orders-queue";
 
     /**
      * Orders queue queue.
@@ -37,7 +38,11 @@ public class RabbitConfig implements RabbitListenerConfigurer {
     @Bean
     Queue ordersQueue() {
 
-        return QueueBuilder.durable(QUEUE_ORDERS).build();
+        return QueueBuilder.durable(QUEUE_ORDERS)
+                .withArgument("x-dead-letter-exchange", "")
+                .withArgument("x-dead-letter-routing-key", QUEUE_DEAD_ORDERS)
+                .withArgument("x-message-ttl", 15000) //if message is not consumed in 15 seconds send to DLQ
+                .build();
     }
 
     /**
