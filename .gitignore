@@ -17,3 +17,9 @@ ActiveMQ-Send-Receive/mvnw
 ActiveMQ-Send-Receive/mvnw.cmd
 ActiveMQ-Send-Receive/.mvn/wrapper/maven-wrapper.jar
 ActiveMQ-Send-Receive/.mvn/
+RabbitMQ-PublisherSubscriber/rabbitmq-consumer/mvnw
+RabbitMQ-PublisherSubscriber/rabbitmq-consumer/.mvn/
+RabbitMQ-PublisherSubscriber/rabbitmq-publisher/mvnw
+RabbitMQ-PublisherSubscriber/rabbitmq-publisher/.mvn/
+RabbitMQ-PublisherSubscriber/rabbitmq-publisher/mvnw.cmd
+RabbitMQ-PublisherSubscriber/rabbitmq-consumer/mvnw.cmd
