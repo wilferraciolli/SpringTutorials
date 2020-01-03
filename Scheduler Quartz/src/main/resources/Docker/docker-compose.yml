@@ -1,0 +1,13 @@
+version: '3'
+
+services: 
+  
+  mysql-quartz:
+    image: mysql:8.0.18
+    environment:
+      MYSQL_ROOT_PASSWORD: Password123
+      MYSQL_DATABASE: quartz_demo_db
+      MYSQL_USER: WilFerraciolli
+      MYSQL_PASSWORD: Password123
+    ports:
+      - "3306:3306"
