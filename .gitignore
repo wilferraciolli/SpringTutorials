@@ -23,3 +23,6 @@ RabbitMQ-PublisherSubscriber/rabbitmq-publisher/mvnw
 RabbitMQ-PublisherSubscriber/rabbitmq-publisher/.mvn/
 RabbitMQ-PublisherSubscriber/rabbitmq-publisher/mvnw.cmd
 RabbitMQ-PublisherSubscriber/rabbitmq-consumer/mvnw.cmd
+Scheduler Quartz/.mvn/
+Scheduler Quartz/mvnw
+Scheduler Quartz/mvnw.cmd
