@@ -26,3 +26,15 @@ RabbitMQ-PublisherSubscriber/rabbitmq-consumer/mvnw.cmd
 Scheduler Quartz/.mvn/
 Scheduler Quartz/mvnw
 Scheduler Quartz/mvnw.cmd
+Gateway Service Discovery Microservices/Discovery Service/mvnw
+Gateway Service Discovery Microservices/Discovery Service/mvnw.cmd
+Gateway Service Discovery Microservices/Microservice One/.mvn/
+Gateway Service Discovery Microservices/Edge Service/.mvn/
+Gateway Service Discovery Microservices/Microservice Two/.mvn/
+Gateway Service Discovery Microservices/Microservice Two/mvnw.cmd
+Gateway Service Discovery Microservices/Microservice Two/mvnw
+Gateway Service Discovery Microservices/Microservice One/mvnw.cmd
+Gateway Service Discovery Microservices/Microservice One/mvnw
+Gateway Service Discovery Microservices/Edge Service/mvnw.cmd
+Gateway Service Discovery Microservices/Discovery Service/.mvn/
+Gateway Service Discovery Microservices/Edge Service/mvnw
