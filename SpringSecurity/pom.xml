@@ -19,7 +19,7 @@
 		<java.version>11</java.version>
 		
 		<spring.version>5.0.2.RELEASE</spring.version>
-		<oauth2.version>2.2.1.RELEASE</oauth2.version>
+		<oauth2.version>2.2.5.RELEASE</oauth2.version>
 	</properties>
 	
 	<dependencies>
