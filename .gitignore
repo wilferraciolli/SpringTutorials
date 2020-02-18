@@ -44,3 +44,6 @@ SpringSecurity/.mvn/
 SpringSecurityMicroservices/mvnw
 SpringSecurityMicroservices/mvnw.cmd
 SpringSecurityMicroservices/.mvn/
+SpringSecurityMicroservices/CoursesAPI/mvnw
+SpringSecurityMicroservices/CoursesAPI/mvnw.cmd
+SpringSecurityMicroservices/CoursesAPI/.mvn/
