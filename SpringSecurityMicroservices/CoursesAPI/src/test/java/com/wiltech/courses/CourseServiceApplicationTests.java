@@ -1,10 +1,10 @@
-package com.wiltech.microservices.security;
+package com.wiltech.courses;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringSecurityMicroservicesApplicationTests {
+class CourseServiceApplicationTests {
 
     @Test
     void contextLoads() {

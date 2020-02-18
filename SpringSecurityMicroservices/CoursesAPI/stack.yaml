@@ -1,11 +1,11 @@
-version: '3.1'
+version: '3.2'
 
 services:
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - 3306:3306
+      - 3307:3306
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: Password123
@@ -13,4 +13,4 @@ services:
       - microservices_dev:/var/lib/mysql
 
 volumes:
-  microservices_dev
+  microservices_dev:
