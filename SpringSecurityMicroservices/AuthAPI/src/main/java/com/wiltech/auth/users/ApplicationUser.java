@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * The type Application user.
+ */
 @Entity
 @Getter
 @Setter
@@ -39,4 +42,20 @@ public class ApplicationUser implements AbstractEntity {
     @NotNull(message = "The field 'password' is mandatory")
     @Column(nullable = false)
     private String password;
+
+    // TODO - remove this messy roles and make it a collection
+    @NotNull(message = "The field 'roles' is mandatory")
+    @Column(nullable = false)
+    private String roles = "USER";
+
+    /**
+     * Instantiates a new Application user.
+     * @param applicationUser the application user
+     */
+    public ApplicationUser(@NotNull ApplicationUser applicationUser) {
+        this.id = applicationUser.getId();
+        this.username = applicationUser.getUsername();
+        this.password = applicationUser.getPassword();
+        this.roles = applicationUser.getRoles();
+    }
 }
