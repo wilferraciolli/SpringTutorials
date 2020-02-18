@@ -27,9 +27,6 @@ public class JwtConfiguration {
     private String privateKey = "0dT73Ht1DiGUVPZOxXsEi3p7DqcGrBAF";
     private String type = "encrypted";
 
-    /**
-     * The type Header.
-     */
     @Getter
     @Setter
     public static class Header {
