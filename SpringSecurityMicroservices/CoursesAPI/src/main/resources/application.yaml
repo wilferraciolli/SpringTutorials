@@ -11,7 +11,7 @@ eureka:
 
 spring:
   application:
-    name: course
+    name: course-service
   jpa:
     show-sql: false
     hibernate:
