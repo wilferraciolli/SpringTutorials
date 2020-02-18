@@ -18,12 +18,13 @@
 	<description>Spring Security Microservices With Gateway and Discovery</description>
 	
 	<properties>
-		<java.version>11</java.version>
+<!--		<java.version>11</java.version>-->
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 	</properties>
 	
 	<modules>
 		<module>coursesAPI</module>
+		<module>Core</module>
 	</modules>
 	
 	<dependencies>

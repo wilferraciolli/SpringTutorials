@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author William Suane
  */
 @RestController
-@RequestMapping("v1/admin/course")
+@RequestMapping("v1/admin/courses")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CourseController {

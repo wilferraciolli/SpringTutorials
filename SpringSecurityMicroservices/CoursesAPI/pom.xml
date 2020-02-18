@@ -6,17 +6,26 @@
 		<groupId>com.wiltech</groupId>
 		<artifactId>spring-security</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-<!--		<relativePath>../</relativePath>>-->
+		<!--<relativePath>../</relativePath>>-->
 	</parent>
 	
 	<artifactId>course-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>course-service</name>
 	<description>Demo project for Spring Boot</description>
-
+	
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
+	<dependencies>
+		<!-- project dependencies -->
+		<dependency>
+			<groupId>com.wiltech</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	
 	<build>
 		<finalName>course-service</finalName>
@@ -39,5 +48,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
