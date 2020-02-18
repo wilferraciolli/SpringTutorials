@@ -1,14 +1,6 @@
 server:
   port: 8082
 
-#eureka:
-#  instance:
-#    prefer-ip-address: true
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8081/eureka/
-#    register-with-eureka: true
-
 spring:
   application:
     name: course-service
@@ -18,13 +10,22 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+      dialect: org.hibernate.dialect.MySQL8Dialect
   jmx:
     enabled: false
   datasource:
     url: jdbc:mysql://localhost:3307/dev?allowPublicKeyRetrieval=true&sslMode=DISABLED
     username: root
     password: Password123
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+    register-with-eureka: true
+
 jwt:
   config:
     type: signed

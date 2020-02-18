@@ -24,6 +24,8 @@
 	
 	<modules>
 		<module>coursesAPI</module>
+		<module>discoveryAPI</module>
+		<module>gatewayAPI</module>
 		<module>Core</module>
 	</modules>
 	

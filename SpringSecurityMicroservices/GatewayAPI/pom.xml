@@ -6,29 +6,27 @@
 		<groupId>com.wiltech</groupId>
 		<artifactId>spring-security</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<!--<relativePath>../</relativePath>-->
+		<!--		<relativePath>../</relativePath>-->
 	</parent>
 	
-	<artifactId>course-service</artifactId>
+	<artifactId>edge-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>course-service</name>
-	<description>Course Service</description>
+	<name>edge-service</name>
+	<description>Edge Service</description>
 	
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 	
 	<dependencies>
-		<!-- project dependencies -->
 		<dependency>
-			<groupId>com.wiltech</groupId>
-			<artifactId>core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
 		</dependency>
 	</dependencies>
 	
 	<build>
-		<finalName>course-service</finalName>
+		<finalName>discovery-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
