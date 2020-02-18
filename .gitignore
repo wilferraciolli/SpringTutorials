@@ -50,3 +50,6 @@ SpringSecurityMicroservices/CoursesAPI/.mvn/
 SpringSecurityMicroservices/GatewayAPI/mvnw
 SpringSecurityMicroservices/GatewayAPI/mvnw.cmd
 SpringSecurityMicroservices/GatewayAPI/.mvn/
+SpringSecurityMicroservices/AuthAPI/mvnw
+SpringSecurityMicroservices/AuthAPI/mvnw.cmd
+SpringSecurityMicroservices/AuthAPI/.mvn/

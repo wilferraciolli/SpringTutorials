@@ -9,16 +9,16 @@
 		<!--<relativePath>../</relativePath>-->
 	</parent>
 	
-	<artifactId>course-service</artifactId>
+	<artifactId>auth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>course-service</name>
-	<description>Course Service</description>
-	
+	<name>auth-service</name>
+	<description>Auth Service</description>
+
 	<properties>
 		<java.version>11</java.version>
 		<ssm-project.version>0.0.1-SNAPSHOT</ssm-project.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- project dependencies -->
 		<dependency>
@@ -26,10 +26,21 @@
 			<artifactId>core</artifactId>
 			<version>${ssm-project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
-		<finalName>course-service</finalName>
+		<finalName>auth-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
