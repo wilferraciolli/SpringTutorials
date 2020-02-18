@@ -11,9 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.wiltech.auth.security.filter.JwtUsernamePasswordAuthenticationFilter;
 import com.wiltech.core.properties.JwtConfiguration;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
-                .addFilter(new UsernamePasswordAuthenticationFilter())// filter used on every request
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfiguration))// filter used on every request
                 .authorizeRequests()
                 .antMatchers(jwtConfiguration.getLoginUrl()).permitAll()
                 .antMatchers("/course/admin/**").hasRole("ADMIN")

@@ -19,4 +19,8 @@ There is a database MySQL available, which is a docker image and is defined on t
 1 - Create a configuration file to hold details on the token
 2 - Create a class to define what end points should be protected
 3 - Create a filter to validate the token 
+4 - The filter will, authenticate the user, generate the token, sign it and encrypt
 
+
+
+PS

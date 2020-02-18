@@ -66,7 +66,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
         // create an object of the user for authentication
         final UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                applicationUser.getUsername(), emptyList());
+                applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
         // pass the user details to be authenticated
         usernamePasswordAuthenticationToken.setDetails(applicationUser);
 
@@ -74,9 +74,10 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
     }
 
-    @SneakyThrows @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authResult) throws IOException, ServletException {
+    @SneakyThrows
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
+            throws IOException, ServletException {
         log.info("9 - Processing token for '{}' and encrypting it", authResult.getName());
 
         SignedJWT signedJWT = createSignedJWT(authResult);
@@ -100,11 +101,11 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                 .build();
 
         // build the token and add the public key
-        final SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.ES256)
+
+        final SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256)
                 .jwk(jwk)
                 .type(JOSEObjectType.JWT)
                 .build(), jwtClaimsSet);
-
         log.info("6 - Signing the token with the private RSA key");
         final RSASSASigner signer = new RSASSASigner(rsaKeys.getPrivate());
         signedJWT.sign(signer);
@@ -124,7 +125,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                         .map(GrantedAuthority::getAuthority)
                         .collect(toList()))
                 .claim("userId", applicationUser.getId())
-                .issuer("http://academy.devdojo")
+                .issuer("http://wiltech.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(System.currentTimeMillis() + (jwtConfiguration.getExpiration() * 1000)))
                 .build();
