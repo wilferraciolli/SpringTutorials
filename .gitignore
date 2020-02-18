@@ -38,3 +38,9 @@ Gateway Service Discovery Microservices/Microservice One/mvnw
 Gateway Service Discovery Microservices/Edge Service/mvnw.cmd
 Gateway Service Discovery Microservices/Discovery Service/.mvn/
 Gateway Service Discovery Microservices/Edge Service/mvnw
+SpringSecurity/mvnw
+SpringSecurity/mvnw.cmd
+SpringSecurity/.mvn/
+SpringSecurityMicroservices/mvnw
+SpringSecurityMicroservices/mvnw.cmd
+SpringSecurityMicroservices/.mvn/
