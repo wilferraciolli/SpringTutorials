@@ -28,6 +28,7 @@
 		<module>discoveryAPI</module>
 		<module>gatewayAPI</module>
 		<module>Core</module>
+		<module>Token</module>
 	</modules>
 	
 	<dependencies>
@@ -72,10 +73,16 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- third party -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
 		</dependency>
 		
 		<!-- Test dependencies-->

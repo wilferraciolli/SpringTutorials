@@ -1,4 +1,4 @@
-package com.wiltech.auth.users;
+package com.wiltech.users;
 
 import java.util.Optional;
 

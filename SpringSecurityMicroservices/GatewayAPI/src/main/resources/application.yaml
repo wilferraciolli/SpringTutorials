@@ -16,6 +16,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-
 zuul:
   sensitive-headers: Cookie
+
+jwt:
+  config:
+    login-url: /auth-service/login

@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.auth.users.ApplicationUser;
-import com.wiltech.auth.users.ApplicationUserRepository;
+import com.wiltech.users.ApplicationUser;
+import com.wiltech.users.ApplicationUserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
