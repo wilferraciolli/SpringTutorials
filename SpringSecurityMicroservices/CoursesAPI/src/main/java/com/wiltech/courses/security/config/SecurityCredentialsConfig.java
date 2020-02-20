@@ -27,7 +27,7 @@ public class SecurityCredentialsConfig extends SecurityTokenConfig {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .addFilterAfter(new JwtTokenAuthorizationFilter(jwtConfiguration, tokenConverter), UsernamePasswordAuthenticationFilter.class);
+			.addFilterAfter(new JwtTokenAuthorizationFilter(jwtConfiguration, tokenConverter), UsernamePasswordAuthenticationFilter.class);
 
         // pass local config to super class
         super.configure(http);
