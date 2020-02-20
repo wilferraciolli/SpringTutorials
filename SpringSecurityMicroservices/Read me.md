@@ -24,3 +24,10 @@ There is a database MySQL available, which is a docker image and is defined on t
 
 
 PS
+Open API docs Swagger can be found for each microservice under
+`microserviceUrl/swagger-ui.html`
+
+Eg
+`http://localhost:8080/gateway/auth-service/swagger-ui.html`
+or
+`http://localhost:8080/gateway/course-service/swagger-ui.html`

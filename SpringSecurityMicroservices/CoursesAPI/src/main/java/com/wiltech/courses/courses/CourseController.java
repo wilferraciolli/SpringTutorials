@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,13 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("v1/admin/courses")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Api(value = "Endpoints to manage courses.")
 public class CourseController {
 
-    private final CourseService courseService;
+	private final CourseService courseService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Course>> list(Pageable pageable) {
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "List of all available courses", response = Course[].class)
+	public ResponseEntity<Iterable<Course>> list(Pageable pageable) {
 
-        return new ResponseEntity<>(courseService.list(pageable), HttpStatus.OK);
-    }
+		return new ResponseEntity<>(courseService.list(pageable), HttpStatus.OK);
+	}
 }

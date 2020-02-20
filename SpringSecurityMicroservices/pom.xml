@@ -21,9 +21,12 @@
 		<!--		<java.version>11</java.version>-->
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<nimbus-jose.version>8.6</nimbus-jose.version>
+		<commons-lang3.version>3.9</commons-lang3.version>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
 	
 	<modules>
+		<module>authAPI</module>
 		<module>coursesAPI</module>
 		<module>discoveryAPI</module>
 		<module>gatewayAPI</module>
@@ -82,7 +85,18 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.9</version>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 		
 		<!-- Test dependencies-->

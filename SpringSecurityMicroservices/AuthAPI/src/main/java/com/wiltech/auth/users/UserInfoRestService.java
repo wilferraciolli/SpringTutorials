@@ -12,20 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wiltech.users.ApplicationUser;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
+@Api(value = "Enpoints to manage users info")
 public class UserInfoRestService {
 
-    @GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@ApiOperation(value = "Will retrieve the information from the user available in the token", response = ApplicationUser.class)
-    public ResponseEntity<ApplicationUser> getUserInfo(Principal principal) {
+	@GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Will retrieve the information from the user available in the token", response = ApplicationUser.class)
+	public ResponseEntity<ApplicationUser> getUserInfo(Principal principal) {
 
-        // get the user logged on from the context security ont he thread
-        ApplicationUser applicationUser = (ApplicationUser) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+		// get the user logged on from the context security ont he thread
+		ApplicationUser applicationUser = (ApplicationUser) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
-        return new ResponseEntity<>(applicationUser, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(applicationUser, HttpStatus.OK);
+	}
 }
