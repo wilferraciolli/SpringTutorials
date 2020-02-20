@@ -106,9 +106,7 @@ public class TokenCreator {
                 .build(), new Payload(signedJWT));
 
         log.info("Encrypting token with system's private key");
-
         jweObject.encrypt(directEncrypter);
-
         log.info("Token encrypted");
 
         return jweObject.serialize();
