@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wiltech.core.AbstractEntity;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplicationUser implements AbstractEntity {
 
     @Id
@@ -47,6 +49,7 @@ public class ApplicationUser implements AbstractEntity {
     // TODO - remove this messy roles and make it a collection
     @NotNull(message = "The field 'roles' is mandatory")
     @Column(nullable = false)
+    @Builder.Default
     private String roles = "USER";
 
     /**

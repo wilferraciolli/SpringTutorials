@@ -1,4 +1,4 @@
-package com.wiltech.auth.security.users;
+package com.wiltech.auth.users;
 
 import java.util.Collection;
 

@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<ssm-core.version>0.0.1-SNAPSHOT</ssm-core.version>
+		<ssm-token.version>0.0.1-SNAPSHOT</ssm-token.version>
 	</properties>
 	
 	<dependencies>
@@ -25,6 +26,11 @@
 			<groupId>com.wiltech</groupId>
 			<artifactId>core</artifactId>
 			<version>${ssm-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wiltech</groupId>
+			<artifactId>token</artifactId>
+			<version>${ssm-token.version}</version>
 		</dependency>
 	</dependencies>
 	
