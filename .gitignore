@@ -53,3 +53,10 @@ SpringSecurityMicroservices/GatewayAPI/.mvn/
 SpringSecurityMicroservices/AuthAPI/mvnw
 SpringSecurityMicroservices/AuthAPI/mvnw.cmd
 SpringSecurityMicroservices/AuthAPI/.mvn/
+Spring Security OAuth2 OPID/.idea/
+Spring Security OAuth2 OPID/account/account.iml
+Spring Security OAuth2 OPID/sample-spring-oauth2-microservices.iml
+Spring Security OAuth2 OPID/auth/.gitignore
+Spring Security OAuth2 OPID/auth/auth.iml
+Spring Security OAuth2 OPID/discovery/discovery.iml
+Spring Security OAuth2 OPID/gateway/gateway.iml

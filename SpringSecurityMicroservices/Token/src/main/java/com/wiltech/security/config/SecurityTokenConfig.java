@@ -25,20 +25,22 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
     // TODO try and remove this so every microservice will define its own
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	// @formatter:off
         http
-                .csrf().disable()
-                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                .and()
-                .sessionManagement().sessionCreationPolicy(STATELESS)
-                .and()
-                .exceptionHandling().authenticationEntryPoint((req, resp, e) -> resp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                .and()
-                .authorizeRequests()
-                .antMatchers(jwtConfiguration.getLoginUrl(), "/**/swagger-ui.html").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/swagger-resources/**", "/**/webjars/springfox-swagger-ui/**", "/**/v2/api-docs/**").permitAll()
-                .antMatchers("/course-service/v1/admin/**").hasRole("ADMIN")
-                .antMatchers("/auth-service/users/**").hasAnyRole("ADMIN", "USER")
-                .anyRequest().authenticated();
-    }
+			.csrf().disable()
+            .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+            .and()
+            .sessionManagement().sessionCreationPolicy(STATELESS)
+            .and()
+            .exceptionHandling().authenticationEntryPoint((req, resp, e) -> resp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+            .and()
+			.authorizeRequests()
+				.antMatchers(jwtConfiguration.getLoginUrl(), "/**/swagger-ui.html").permitAll()
+				.antMatchers(HttpMethod.GET, "/**/swagger-resources/**", "/**/webjars/springfox-swagger-ui/**", "/**/v2/api-docs/**").permitAll()
+				.antMatchers("/course-service/v1/admin/**").hasRole("ADMIN")
+				.antMatchers("/auth-service/users/**").hasAnyRole("ADMIN", "USER")
+			.anyRequest().authenticated();
+		// @formatter:on
+	}
 
 }
