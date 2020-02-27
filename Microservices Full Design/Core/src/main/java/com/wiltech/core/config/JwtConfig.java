@@ -1,4 +1,4 @@
-package com.eureka.common.security;
+package com.wiltech.core.config;
 
 import org.springframework.beans.factory.annotation.Value;
 

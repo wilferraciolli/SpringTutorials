@@ -1,3 +1,4 @@
+*.iml
 Spring JPa microservices JWT/Spring JAP ToDo App/.mvn/
 ActiveMQ-JMS/.mvn/
 ActiveMQ-JMS/mvnw
@@ -60,3 +61,22 @@ Spring Security OAuth2 OPID/auth/.gitignore
 Spring Security OAuth2 OPID/auth/auth.iml
 Spring Security OAuth2 OPID/discovery/discovery.iml
 Spring Security OAuth2 OPID/gateway/gateway.iml
+Microservices Full Design/.idea/
+Microservices Full Design/Discovery Service/mvnw
+Custom Auth Server Microservices/Auth Server/.mvn/
+Custom Auth Server Microservices/Resource Server A/.mvn/wrapper/maven-wrapper.properties
+Custom Auth Server Microservices/Resource Server B/.mvn/wrapper/maven-wrapper.jar
+Custom Auth Server Microservices/Resource Server B/.mvn/
+microservices-spring-boot-Security-zull-eureka/.idea/
+Microservices Full Design/Discovery Service/.mvn/
+Microservices Full Design/Core/target/
+Microservices Full Design/Edge Server/.mvn/
+Custom Auth Server Microservices/Auth Server/mvnw
+Custom Auth Server Microservices/Auth Server/mvnw.cmd
+Custom Auth Server Microservices/Resource Server A/mvnw
+Custom Auth Server Microservices/Resource Server A/mvnw.cmd
+Custom Auth Server Microservices/Resource Server A/.mvn/
+Custom Auth Server Microservices/Resource Server B/mvnw
+Custom Auth Server Microservices/Resource Server B/mvnw.cmd
+Microservices Full Design/Edge Server/mvnw
+Microservices Full Design/Edge Server/mvnw.cmd

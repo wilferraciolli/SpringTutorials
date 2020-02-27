@@ -1,4 +1,4 @@
-package com.eureka.auth.security;
+package com.wiltech.authserver.security;
 
 import java.util.Arrays;
 import java.util.List;

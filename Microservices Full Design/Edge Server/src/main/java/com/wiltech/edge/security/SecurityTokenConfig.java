@@ -1,4 +1,4 @@
-package com.eureka.zuul.security;
+package com.wiltech.edge.security;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,10 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.eureka.common.security.JwtConfig;
+import com.wiltech.core.config.JwtConfig;
 
 @EnableWebSecurity 	// Enable security config. This annotation denotes config for spring security.
 public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
+
 	@Autowired
 	private JwtConfig jwtConfig;
  

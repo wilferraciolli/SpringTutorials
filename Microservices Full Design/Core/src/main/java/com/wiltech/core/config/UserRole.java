@@ -1,4 +1,4 @@
-package com.eureka.common.security;
+package com.wiltech.core.config;
 
 public enum UserRole {
 	USER, ADMIN;

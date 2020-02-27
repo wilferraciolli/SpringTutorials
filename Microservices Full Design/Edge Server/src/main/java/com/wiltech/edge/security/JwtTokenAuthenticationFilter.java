@@ -1,4 +1,4 @@
-package com.eureka.zuul.security;
+package com.wiltech.edge.security;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.eureka.common.security.JwtConfig;
+import com.wiltech.core.config.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,10 +34,11 @@ public class JwtTokenAuthenticationFilter extends  OncePerRequestFilter {
 		// 1. get the authentication header. Tokens are supposed to be passed in the authentication header
 		String header = request.getHeader(jwtConfig.getHeader());
 		
-		// 2. validate the header and check the prefix
+		// 2. validate the header and check the prefix, if should not be authenticated, then carry on
 		if(header == null || !header.startsWith(jwtConfig.getPrefix())) {
-			chain.doFilter(request, response);  		// If not valid, go to the next filter.
-			return;
+			chain.doFilter(request, response);
+
+            return;
 		}
 		
 		// If there is no token provided and hence the user won't be authenticated. 
