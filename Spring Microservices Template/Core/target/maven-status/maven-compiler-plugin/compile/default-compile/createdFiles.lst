@@ -1,0 +1,6 @@
+com\wiltech\core\properties\JwtConfiguration.class
+com\wiltech\core\AbstractEntity.class
+com\wiltech\core\config\UserRole.class
+com\wiltech\core\properties\JwtConfiguration$Header.class
+com\wiltech\core\docs\BaseOpenApiConfig.class
+com\wiltech\core\config\JwtConfig.class

@@ -1,0 +1,12 @@
+spring:
+  jpa:
+  application:
+    name: microservice-a
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8081
+
