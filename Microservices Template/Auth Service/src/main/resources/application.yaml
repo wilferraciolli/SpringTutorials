@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: auth-service
+
+# default port for eureka server
+server:
+  port: 9001
+  servlet:
+    context-path: /uaa
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+security:
+  oauth2:
+    client:
+      client-id: wiltech
+      client-secret: wiltechsecret
+      authorized-grant-types: authorization_code,refresh_token,password,client_credentials
+      scope: read,write

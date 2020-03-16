@@ -87,3 +87,10 @@ Spring Microservices Template/Discovery Service/.mvn/
 Spring Microservices Template/Edge Server/mvnw
 Spring Microservices Template/Edge Server/mvnw.cmd
 Spring Microservices Template/Edge Server/.mvn/
+Microservices Template/Delete Me/log/
+Microservices Template/Edge Service/log/
+Custom Auth Server Microservices/.idea/
+Gateway Service Discovery Microservices/.idea/$CACHE_FILE$
+Microservices Template/.idea/
+Microservices Template/Auth Service/log/
+Microservices Template/Discovery Service/log/
