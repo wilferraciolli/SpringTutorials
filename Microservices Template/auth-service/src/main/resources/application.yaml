@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:mysql://localhost:2012/spring_app_db?createDatabaseIfNotExist=true
+    river-class-name: com.mysql.jdbc.Driver
+    username: app_user
+    password: test123
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+# default port for eureka server
+server:
+  port: 9001
+  servlet:
+    context-path: /uaa
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/

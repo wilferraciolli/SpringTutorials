@@ -12,10 +12,10 @@
 	<description>Spring Security Microservices With Gateway and Discovery</description>
 	
 	<modules>
-		<module>Discovery Service</module>
-		<module>Edge Service</module>
-		<module>Auth Service</module>
-		<!--		<module>Resource Server A</module>-->
+		<module>discovery-service</module>
+		<module>edge-service</module>
+		<module>auth-service</module>
+		<module>orders-service</module>
 	</modules>
-	
+
 </project>

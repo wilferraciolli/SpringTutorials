@@ -1,0 +1,51 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: edge-service
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+security:
+  basic:
+    enabled: false
+  user:
+    password: none
+
+zuul:
+  ignored-services: '*'
+  sensitive-headers: Cookie,Set-Cookie
+  routes:
+    orders-service:
+      path: /orders/**
+      service-id: orders-service
+      strip-prefix: false
+
+    products-service:
+      path: /products/**
+      service-id: products-service
+      strip-prefix: false
+
+    auth-service:
+      path: /uaa/**
+      service-id: auth-service
+      strip-prefix: false
+      # Exclude authorization from sensitive headers
+      sensitive-headers: Cookie,Set-Cookie
+
+#Hystrix time out
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+#Ribbon time out
+ribbon:
+  ReadTimeout: 70000
