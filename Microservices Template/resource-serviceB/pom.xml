@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wiltech</groupId>
-	<artifactId>order-service</artifactId>
+	<artifactId>resource-serviceB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>order-service</name>
+	<name>resource-serviceB</name>
 	<description>Demo project for Spring Boot</description>
 	
 	<properties>
