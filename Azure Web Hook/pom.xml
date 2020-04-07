@@ -29,6 +29,67 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- Azure -->
+<!--		<dependency>-->
+<!--			<groupId>com.microsoft.azure</groupId>-->
+<!--			<artifactId>azure</artifactId>-->
+<!--			<version>1.16.0</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.microsoft.azure</groupId>-->
+<!--			<artifactId>azure-eventgrid</artifactId>-->
+<!--			<version>1.2.0</version>-->
+<!--		</dependency>-->
+		
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-client-authentication -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-client-authentication</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.rest/client-runtime -->
+		<dependency>
+			<groupId>com.microsoft.rest</groupId>
+			<artifactId>client-runtime</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-arm-client-runtime -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-arm-client-runtime</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-eventgrid -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-eventgrid</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-eventhub -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-mgmt-eventhub</artifactId>
+			<version>1.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-resources -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-mgmt-resources</artifactId>
+			<version>1.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure.eventgrid.v2018_01_01/azure-mgmt-eventgrid -->
+		<dependency>
+			<groupId>com.microsoft.azure.eventgrid.v2018_01_01</groupId>
+			<artifactId>azure-mgmt-eventgrid</artifactId>
+			<version>1.0.0-beta-2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-eventhubs</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -40,6 +101,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+	
 	</dependencies>
 	
 	<build>

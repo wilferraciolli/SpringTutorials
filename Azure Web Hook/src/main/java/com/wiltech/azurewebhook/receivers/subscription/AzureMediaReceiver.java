@@ -44,7 +44,10 @@ public class AzureMediaReceiver {
             // fire encode job for asset id event
             System.out.println("Blob Deleted ");
             System.out.println(payload);
+        }else{
+            System.out.println(payload);
         }
+
 
         return null;
     }
