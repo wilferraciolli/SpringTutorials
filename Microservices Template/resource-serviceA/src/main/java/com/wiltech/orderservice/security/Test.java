@@ -21,7 +21,10 @@ public class Test {
 
     @GetMapping("/sec")
     public String getMe1(@AuthenticationPrincipal Principal principal){
-        System.out.println(principal);
+           System.out.println("********************");
+           System.out.println("********************");
+           System.out.println("********************");
+           System.out.println(principal);
         return "You";
     }
 

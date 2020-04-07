@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableDiscoveryClient
 @EnableResourceServer
-public class OrderServiceApplication {
+public class ResourceServiceBApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(ResourceServiceBApplication.class, args);
     }
 
     //    //added
@@ -31,7 +31,7 @@ public class OrderServiceApplication {
     //    }
 
     @RequestMapping("/tolldata")
-    @PreAuthorize("#oauth2.hasScope('toll_read') and hasAuthority('ROLE_OPERATOR')")
+    @PreAuthorize("#oauth2.hasScope('read_profile') and hasAuthority('ROLE_ADMIN')")
     public ArrayList<TollUsage> getTollData() {
 
         TollUsage instance1 = new TollUsage("200", "station150", "B65GT1W", "2016-09-30T06:31:22");

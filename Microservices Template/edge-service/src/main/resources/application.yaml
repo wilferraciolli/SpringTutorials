@@ -21,13 +21,13 @@ zuul:
   sensitive-headers: Cookie,Set-Cookie
   routes:
     orders-service:
-      path: /orders/**
-      service-id: orders-service
+      path: /servicea/**
+      service-id: resource-servicea
       strip-prefix: false
 
     products-service:
-      path: /products/**
-      service-id: products-service
+      path: /serviceb/**
+      service-id: resource-serviceb
       strip-prefix: false
 
     auth-service:
