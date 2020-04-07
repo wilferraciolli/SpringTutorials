@@ -42,9 +42,10 @@ hystrix:
   command:
     default:
       execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 60000
+        timeout:
+          enabled: false
+
+
 
 #Ribbon time out
 ribbon:
