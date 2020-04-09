@@ -110,3 +110,4 @@ Azure Web Hook/mvnw.cmd
 Azure Web Hook/.mvn/
 Microservices Template/log/
 *.log
+RabbitMQ-PublisherSubscriber/.idea/
