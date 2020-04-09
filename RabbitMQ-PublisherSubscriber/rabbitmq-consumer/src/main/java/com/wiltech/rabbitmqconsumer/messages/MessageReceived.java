@@ -1,8 +1,6 @@
-package com.wiltech.rabbitmqconsumer.message;
+package com.wiltech.rabbitmqconsumer.messages;
 
 import java.io.Serializable;
-
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.wiltech.rabbitmqpublisher.message;
 
-import java.io.Serializable;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -15,10 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonRootName("myMessage")
-public class MessageToSend implements Serializable {
+@JsonRootName("personCreatedEvent")
+public class PersonCreatedEvent {
 
-    private Long id;
-    private String description;
-    private double amount;
+    private Long personId;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+
 }

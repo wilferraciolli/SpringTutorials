@@ -1,19 +1,61 @@
 package com.wiltech.rabbitmqconsumer.config;
 
-import static com.wiltech.rabbitmqconsumer.config.RabbitMQConfig.QUEUE_NAME;
+import java.util.List;
+import java.util.Objects;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
 
-import com.wiltech.rabbitmqconsumer.message.MessageReceived;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.wiltech.rabbitmqconsumer.bean.initializer.AppContextBeanUtil;
+import com.wiltech.rabbitmqconsumer.messages.core.AbstractMessageReceiver;
+import com.wiltech.rabbitmqconsumer.messages.core.DomainEvent;
+import com.wiltech.rabbitmqconsumer.messages.core.EventPublisher;
+import com.wiltech.rabbitmqconsumer.messages.core.MessageReceiverType;
 
-public class RabbitMQMessageListener implements MessageListener {
+import lombok.extern.java.Log;
+
+@Log
+@Component
+public class RabbitMQMessageListener extends AbstractMessageReceiver implements MessageListener {
+
+    //    @Autowired
+    //    private EventPublisher publisher;
 
     @Override
     public void onMessage(final Message message) {
 
-        System.out.println("Message received " + new String(message.getBody()));
+        log.info("Message received " + new String(message.getBody()));
+
+        if (Objects.nonNull(message.getMessageProperties()) && message.getMessageProperties().getType() != null) {
+            publishDomainEvents(message);
+
+        } else {
+            log.warning("Message properties type cannot be null");
+        }
+    }
+
+    //    private EventPublisher getEventPublisher() {
+    //
+    //        // util to instantiate a bean
+    //        return AppContextBeanUtil.getBean(EventPublisher.class);
+    //    }
+
+    private void publishDomainEvents(Message message) {
+
+        try {
+            List<DomainEvent> messages = processQueueMessage(message, new Class[] {MessageReceiverType.class});
+            messages.stream()
+                    .forEach(event -> {
+                        log.fine("The event is " + event);
+                        //                        getEventPublisher().publishEvent(event);
+                        AppContextBeanUtil.getBean(EventPublisher.class).publishEvent(event);
+                    });
+
+        } catch (JsonProcessingException e) {
+            log.severe("Could not find an event to deserialize the message " + e.getMessage());
+        }
     }
 
 }

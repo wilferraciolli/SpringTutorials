@@ -15,10 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonRootName("myMessage")
-public class MessageToSend implements Serializable {
+@JsonRootName("myCustomMessage")
+public class CustomMessageToSend implements Serializable {
 
     private Long id;
-    private String description;
-    private double amount;
+    private String customDescription;
+    private double price;
 }

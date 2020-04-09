@@ -1,8 +1,7 @@
-package com.wiltech.rabbitmqpublisher.message;
-
-import java.io.Serializable;
+package com.wiltech.rabbitmqconsumer.messages;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.wiltech.rabbitmqconsumer.messages.core.DomainEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +14,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonRootName("myMessage")
-public class MessageToSend implements Serializable {
+@JsonRootName("myCustomMessage")
+public class CustomMessage implements DomainEvent {
 
     private Long id;
-    private String description;
-    private double amount;
+    private String customDescription;
+    private double price;
 }
