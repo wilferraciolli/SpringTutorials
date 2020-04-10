@@ -1,4 +1,4 @@
-package com.wiltech.rabbitmqpublisher.message;
+package com.wiltech.rabbitmqpublisher.messages;
 
 import java.util.ArrayList;
 import java.util.List;

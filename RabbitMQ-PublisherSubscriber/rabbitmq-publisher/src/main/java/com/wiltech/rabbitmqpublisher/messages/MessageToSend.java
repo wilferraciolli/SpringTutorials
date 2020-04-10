@@ -1,6 +1,8 @@
-package com.wiltech.rabbitmqconsumer.messages;
+package com.wiltech.rabbitmqpublisher.messages;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//@JsonRootName("myMessage")
-public class MessageReceived implements Serializable {
+@JsonRootName("myMessage")
+public class MessageToSend implements Serializable {
 
-    private Long Id;
+    private Long id;
     private String description;
     private double amount;
 }

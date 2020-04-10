@@ -1,4 +1,4 @@
-package com.wiltech.rabbitmqpublisher.message;
+package com.wiltech.rabbitmqpublisher.messages;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;

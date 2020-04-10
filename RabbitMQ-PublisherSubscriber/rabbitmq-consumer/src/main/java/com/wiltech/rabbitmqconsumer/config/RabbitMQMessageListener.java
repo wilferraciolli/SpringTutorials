@@ -20,9 +20,6 @@ import lombok.extern.java.Log;
 @Component
 public class RabbitMQMessageListener extends AbstractMessageReceiver implements MessageListener {
 
-    //    @Autowired
-    //    private EventPublisher publisher;
-
     @Override
     public void onMessage(final Message message) {
 
@@ -36,12 +33,6 @@ public class RabbitMQMessageListener extends AbstractMessageReceiver implements 
         }
     }
 
-    //    private EventPublisher getEventPublisher() {
-    //
-    //        // util to instantiate a bean
-    //        return AppContextBeanUtil.getBean(EventPublisher.class);
-    //    }
-
     private void publishDomainEvents(Message message) {
 
         try {
@@ -49,7 +40,6 @@ public class RabbitMQMessageListener extends AbstractMessageReceiver implements 
             messages.stream()
                     .forEach(event -> {
                         log.fine("The event is " + event);
-                        //                        getEventPublisher().publishEvent(event);
                         AppContextBeanUtil.getBean(EventPublisher.class).publishEvent(event);
                     });
 
