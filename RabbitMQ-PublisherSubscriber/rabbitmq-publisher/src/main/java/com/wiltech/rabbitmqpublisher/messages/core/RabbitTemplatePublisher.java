@@ -1,6 +1,7 @@
-package com.wiltech.rabbitmqpublisher.messages;
+package com.wiltech.rabbitmqpublisher.messages.core;
 
 import java.lang.annotation.Annotation;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wiltech.rabbitmqpublisher.messages.CustomMessageToSend;
+import com.wiltech.rabbitmqpublisher.messages.MessageToSend;
+import com.wiltech.rabbitmqpublisher.messages.PersonCreatedEvent;
+import com.wiltech.rabbitmqpublisher.messages.UserCreatedEvent;
 
 @Service
 public class RabbitTemplatePublisher {
@@ -24,6 +29,9 @@ public class RabbitTemplatePublisher {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private MessageSentRepository messageSentRepository;
 
     @Scheduled(fixedRate = 5000L)
     public void publishMessage() throws JsonProcessingException {
@@ -61,12 +69,14 @@ public class RabbitTemplatePublisher {
         final Message message = MessageBuilder.withBody(s.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                 .setCorrelationId(UUID.randomUUID().toString())
+                .setAppId("${spring.application.name}")
+                .setMessageId(UUID.randomUUID().toString())
                 .setType(resolveJsonRootName(event))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", event.getClass().getCanonicalName())
                 .build();
 
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, message);
+        sendMessage(message);
     }
 
     private void sendUserCreatedMessage() throws JsonProcessingException {
@@ -83,12 +93,14 @@ public class RabbitTemplatePublisher {
         final Message message = MessageBuilder.withBody(s.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                 .setCorrelationId(UUID.randomUUID().toString())
+                .setAppId("${spring.application.name}")
+                .setMessageId(UUID.randomUUID().toString())
                 .setType(resolveJsonRootName(event))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", event.getClass().getCanonicalName())
                 .build();
 
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, message);
+        sendMessage(message);
     }
 
     private void sendCustomMessage() throws JsonProcessingException {
@@ -105,12 +117,34 @@ public class RabbitTemplatePublisher {
         final Message message = MessageBuilder.withBody(s.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                 .setCorrelationId(UUID.randomUUID().toString())
+                .setAppId("${spring.application.name}")
+                .setMessageId(UUID.randomUUID().toString())
                 .setType(resolveJsonRootName(customMessageToSend))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", customMessageToSend.getClass().getCanonicalName())
                 .build();
 
+        sendMessage(message);
+    }
+
+    private void sendMessage(Message message) {
+        persistDetailsForTheMessageSent(message);
+
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, message);
+    }
+
+    private void persistDetailsForTheMessageSent(Message message) {
+        messageSentRepository.save(MessageSent.builder()
+                .correlationId(message.getMessageProperties().getCorrelationId())
+                .messageId(message.getMessageProperties().getMessageId())
+                .appId(message.getMessageProperties().getAppId())
+                .userId(message.getMessageProperties().getUserId())
+                .messageType(message.getMessageProperties().getType())
+                .replyTo(message.getMessageProperties().getReplyTo())
+                .source("publisher")
+                .messageBody(new String(message.getBody()))
+                .sentDateTime(LocalDateTime.now())
+                .build());
     }
 
     private String resolveJsonRootName(final Object messageToSend) {

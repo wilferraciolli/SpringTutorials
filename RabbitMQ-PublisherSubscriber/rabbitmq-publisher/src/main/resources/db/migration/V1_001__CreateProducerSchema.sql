@@ -6,6 +6,9 @@ create TABLE messagesent
 (
     id             BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     correlation_id VARCHAR(36) NOT NULL,
+    message_id     VARCHAR(36) NOT NULL,
+    app_id         VARCHAR(36) NULL,
+    user_id        VARCHAR(36) NULL,
     source         VARCHAR(80) NOT NULL,
     reply_to       VARCHAR(80),
     message_type   VARCHAR(80),

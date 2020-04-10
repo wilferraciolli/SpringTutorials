@@ -30,6 +30,15 @@ public class MessageSent implements Serializable {
     @Column(name = "correlation_id")
     private String correlationId;
 
+    @Column(name = "message_id")
+    private String messageId;
+
+    @Column(name = "app_id")
+    private String appId;
+
+    @Column(name = "user_id")
+    private String userId;
+
     @Column
     private String source;
 
