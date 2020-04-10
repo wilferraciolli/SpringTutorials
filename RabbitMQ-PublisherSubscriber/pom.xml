@@ -11,9 +11,15 @@
 	<name>RabbitMQ AMQP Template</name>
 	<description>Sample application with publisher subscriber RabbitMQ AMQP template</description>
 	
+	<properties>
+		<spring-core.version>5.2.5.RELEASE</spring-core.version>
+	</properties>
+	
 	<modules>
 		<module>rabbitmq-publisher</module>
 		<module>rabbitmq-consumer</module>
+		<module>rabbitmq-consumer-person</module>
+		<module>rabbitmq-consumer-user</module>
 	</modules>
 
 </project>

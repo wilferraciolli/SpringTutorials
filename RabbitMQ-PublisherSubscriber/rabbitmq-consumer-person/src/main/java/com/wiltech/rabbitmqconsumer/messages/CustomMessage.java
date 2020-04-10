@@ -1,10 +1,7 @@
 package com.wiltech.rabbitmqconsumer.messages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.wiltech.core.DomainEvent;
+import com.wiltech.rabbitmqconsumer.messages.core.DomainEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,11 +14,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonRootName("userCreatedEvent")
-public class UserCreatedEvent implements DomainEvent {
+@JsonRootName("myCustomMessage")
+public class CustomMessage implements DomainEvent {
 
-    private Long userId;
-    private String email;
-    private List<String> roles = new ArrayList<>();
-
+    private Long id;
+    private String customDescription;
+    private double price;
 }

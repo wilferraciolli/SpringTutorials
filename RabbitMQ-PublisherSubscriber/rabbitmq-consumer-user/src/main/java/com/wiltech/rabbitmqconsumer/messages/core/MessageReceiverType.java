@@ -1,14 +1,9 @@
 package com.wiltech.rabbitmqconsumer.messages.core;
 
-import com.wiltech.core.DomainEvent;
-import com.wiltech.core.MessageEvent;
 import com.wiltech.rabbitmqconsumer.messages.CustomMessage;
 import com.wiltech.rabbitmqconsumer.messages.PersonCreatedEvent;
 import com.wiltech.rabbitmqconsumer.messages.UserCreatedEvent;
 
-/**
- * Enum to specify only the messages interested by receiver.
- */
 public enum MessageReceiverType implements MessageEvent {
 
     TEST("myCustomMessage", CustomMessage.class),

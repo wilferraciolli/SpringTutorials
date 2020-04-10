@@ -3,7 +3,7 @@ package com.wiltech.rabbitmqconsumer.messages;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.wiltech.rabbitmqconsumer.messages.core.DomainEvent;
+import com.wiltech.core.DomainEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

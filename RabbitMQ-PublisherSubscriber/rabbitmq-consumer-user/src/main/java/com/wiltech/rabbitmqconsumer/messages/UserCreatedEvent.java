@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.wiltech.core.DomainEvent;
+import com.wiltech.rabbitmqconsumer.messages.core.DomainEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

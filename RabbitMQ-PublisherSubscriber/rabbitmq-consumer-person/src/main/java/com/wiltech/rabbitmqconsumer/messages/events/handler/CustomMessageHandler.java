@@ -1,6 +1,5 @@
 package com.wiltech.rabbitmqconsumer.messages.events.handler;
 
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -14,14 +13,13 @@ import lombok.extern.java.Log;
 @Log
 public class CustomMessageHandler {
 
-    @EventListener
+    //  @EventListener
     public void handleEvent(CustomMessage event) {
         log.info("****************************************** Message handled " + event);
 
     }
 
-    //    @TransactionalEventListener
-    @EventListener
+    @TransactionalEventListener
     public void handlePersonEvent1(PersonCreatedEvent event) {
         log.info("handlePersonEvent1 ****************************************** Message handled " + event);
     }
