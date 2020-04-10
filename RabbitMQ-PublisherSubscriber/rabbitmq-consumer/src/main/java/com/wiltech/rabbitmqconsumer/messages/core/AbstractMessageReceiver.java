@@ -1,5 +1,6 @@
 package com.wiltech.rabbitmqconsumer.messages.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,11 @@ import org.springframework.amqp.core.Message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wiltech.rabbitmqconsumer.bean.initializer.AppContextBeanUtil;
 
+import lombok.extern.java.Log;
+
+@Log
 public class AbstractMessageReceiver {
 
     /**
@@ -53,5 +58,42 @@ public class AbstractMessageReceiver {
         }
 
         return domainEvents;
+    }
+
+    private void createRecordForMessageReceived(Message message) {
+        AppContextBeanUtil.getBean(MessageReceivedRepository.class).save(MessageReceived.builder()
+                .correlationId(message.getMessageProperties().getCorrelationId())
+                .messageId(message.getMessageProperties().getMessageId())
+                .appId(message.getMessageProperties().getAppId())
+                .userId(message.getMessageProperties().getUserId())
+                .receivedUserId(message.getMessageProperties().getReceivedUserId())
+                .eventType(message.getMessageProperties().getType())
+                .contentType(message.getMessageProperties().getContentType())
+                .encodingType(message.getMessageProperties().getContentEncoding())
+                .replyTo(message.getMessageProperties().getReplyTo())
+                .source(message.getMessageProperties().getHeader("source"))
+                .receivedExchange(message.getMessageProperties().getReceivedExchange())
+                .receivedRoutingKey(message.getMessageProperties().getReceivedRoutingKey())
+                .consumerTag(message.getMessageProperties().getConsumerTag())
+                .consumerQueue(message.getMessageProperties().getConsumerQueue())
+                .eventBody(new String(message.getBody()))
+                .receivedDateTime(LocalDateTime.now())
+                .build());
+    }
+
+    protected void publishDomainEvents(Message message) {
+
+        try {
+            List<DomainEvent> messages = processQueueMessage(message, new Class[] {MessageReceiverType.class});
+            messages.stream()
+                    .forEach(event -> {
+                        log.fine("The event is " + event);
+                        createRecordForMessageReceived(message);
+                        AppContextBeanUtil.getBean(EventPublisher.class).publishEvent(event);
+                    });
+
+        } catch (JsonProcessingException e) {
+            log.severe("Could not find an event to deserialize the message " + e.getMessage());
+        }
     }
 }
