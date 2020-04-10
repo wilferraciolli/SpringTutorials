@@ -11,8 +11,8 @@ create TABLE messagesent
     user_id        VARCHAR(36) NULL,
     source         VARCHAR(80) NOT NULL,
     reply_to       VARCHAR(80),
-    message_type   VARCHAR(80),
-    message_body   VARCHAR(6000),
+    event_type     VARCHAR(80),
+    event_body     VARCHAR(6000),
     sent_date_time DATETIME
 );
 commit;

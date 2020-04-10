@@ -7,7 +7,7 @@ spring:
     password: guest
 
   application:
-    name: amqp-publisher
+    name: amqp-consumer
   jpa:
     show-sql: false
     hibernate:

@@ -45,11 +45,11 @@ public class MessageSent implements Serializable {
     @Column(name = "reply_to")
     private String replyTo;
 
-    @Column(name = "message_type")
-    private String messageType;
+    @Column(name = "event_type")
+    private String eventType;
 
-    @Column(name = "message_body")
-    private String messageBody;
+    @Column(name = "event_body")
+    private String eventBody;
 
     @Column(name = "sent_date_time")
     private LocalDateTime sentDateTime;

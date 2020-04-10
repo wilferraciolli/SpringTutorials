@@ -10,6 +10,7 @@ import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,9 @@ public class RabbitTemplatePublisher {
 
     @Autowired
     private MessageSentRepository messageSentRepository;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @Scheduled(fixedRate = 5000L)
     public void publishMessage() throws JsonProcessingException {
@@ -74,6 +78,7 @@ public class RabbitTemplatePublisher {
                 .setType(resolveJsonRootName(event))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", event.getClass().getCanonicalName())
+                .setHeader("source", applicationName)
                 .build();
 
         sendMessage(message);
@@ -98,6 +103,7 @@ public class RabbitTemplatePublisher {
                 .setType(resolveJsonRootName(event))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", event.getClass().getCanonicalName())
+                .setHeader("source", applicationName)
                 .build();
 
         sendMessage(message);
@@ -122,6 +128,7 @@ public class RabbitTemplatePublisher {
                 .setType(resolveJsonRootName(customMessageToSend))
                 .setContentEncoding("UTF-8")
                 .setHeader("object", customMessageToSend.getClass().getCanonicalName())
+                .setHeader("source", applicationName)
                 .build();
 
         sendMessage(message);
@@ -139,10 +146,10 @@ public class RabbitTemplatePublisher {
                 .messageId(message.getMessageProperties().getMessageId())
                 .appId(message.getMessageProperties().getAppId())
                 .userId(message.getMessageProperties().getUserId())
-                .messageType(message.getMessageProperties().getType())
+                .eventType(message.getMessageProperties().getType())
                 .replyTo(message.getMessageProperties().getReplyTo())
-                .source("publisher")
-                .messageBody(new String(message.getBody()))
+                .source(message.getMessageProperties().getHeader("source"))
+                .eventBody(new String(message.getBody()))
                 .sentDateTime(LocalDateTime.now())
                 .build());
     }
