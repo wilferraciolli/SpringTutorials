@@ -14,7 +14,7 @@ import lombok.extern.java.Log;
  */
 @Log
 @Component
-public class RabbitMQMessageListener extends AbstractMessageReceiver implements MessageListener {
+public class AMQPFanoutMessageListener extends AbstractMessageReceiver implements MessageListener {
 
     @Override
     public void onMessage(final Message message) {
