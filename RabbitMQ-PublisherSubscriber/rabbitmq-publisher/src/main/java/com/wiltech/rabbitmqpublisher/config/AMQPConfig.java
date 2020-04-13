@@ -8,17 +8,26 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.wiltech.common.AMQPUtil;
+
 @Configuration
 public class AMQPConfig {
 
-    // Create Exchange
+    // Create topic exchange exemplar Exchange
     @Bean
-    Exchange myExchange() {
+    Exchange createExemplarTopicExchange() {
 
         return ExchangeBuilder
-                .topicExchange("MyTopicExchange")
+                .topicExchange("MyTopicExchangeTemplate")
                 .durable(true)
                 .build();
+    }
+
+    // Create fanout exchange
+    @Bean
+    Exchange createFanoutTopicExchange() {
+
+        return AMQPUtil.getFanoutExchange();
     }
 
     // config to serialize messages

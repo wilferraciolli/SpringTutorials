@@ -1,5 +1,10 @@
 package com.wiltech.core;
 
+import static java.util.Objects.nonNull;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,53 +16,87 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.java.Log;
 
+/**
+ * Abstract class to process each message receive and to convert onto a Domain event and publish it.
+ * This class will take an array of enums that tell which events to process.
+ * Finally it will create a record on the database of the event published.
+ */
 @Log
 public class AbstractMessageReceiver {
 
-    protected <T extends Enum<T> & MessageEvent> void publishDomainEvents(Message message, final Class<T>... msgEventClass) {
+    protected <T extends Enum<T> & MessageEvent> void publishDomainEvents(final Message message, final Class<T>... msgEventClass) {
 
         try {
-            List<DomainEvent> messages = processQueueMessage(message, msgEventClass);
-            messages.stream()
-                    .forEach(event -> {
-                        log.fine("The event is " + event);
-                        createRecordForMessageReceived(message);
-                        AppContextBeanUtil.getBean(EventPublisher.class).publishEvent(event);
-                    });
+            if (nonNull(message.getMessageProperties())
+                && isNotEmpty(message.getMessageProperties().getType())) {
+
+                List<DomainEvent> messages = processMessage(message, msgEventClass);
+                messages.stream()
+                        .forEach(m -> {
+                            log.fine("The event is " + m);
+                            createRecordForMessageReceived(message);
+                            AppContextBeanUtil.getBean(EventPublisher.class).publishEvent(m);
+                        });
+
+            } else {
+                log.severe("Message properties.type cannot be null");
+            }
 
         } catch (JsonProcessingException e) {
             log.severe("Could not find an event to deserialize the message " + e.getMessage());
         }
     }
 
-    /**
-     * Process the message from a queue.
-     * @param <T> The enum type for the message event.
-     * @param message The message to be processed.
-     * @param msgEventClass The enum types for the message event.
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private <T extends Enum<T> & MessageEvent> List<DomainEvent> processQueueMessage(final Message message, final Class<T>... msgEventClass)
+    private <T extends Enum<T> & MessageEvent> List<DomainEvent> processMessage(Message message, Class<T>[] msgEventClass)
             throws JsonProcessingException {
+        List<DomainEvent> messages;
 
-        // this should instantiate a bean
-        final List<DomainEvent> domainEvents = convertQueueMessageToDomainEvent(message, msgEventClass);
-        System.out.println("The list of domain events so far " + domainEvents);
+        if (isNotBlank(message.getMessageProperties().getReceivedRoutingKey())) {
+            // Determine if routing key was populated which means that it should throw an error for unknown types
+            messages = processKeyRoutedMessage(message, msgEventClass);
+        } else {
+            // messages processed here were broad casted via fanout and may or may not be handled
+            messages = processFanOutMessage(message, msgEventClass);
+        }
 
-        return domainEvents;
-
+        return messages;
     }
 
     /**
-     * Creates a domain event from a message from a queue.
+     * Process a message that should have been key routed to this receiver. It must expect it, otherwise will throw an error.
+     */
+    @SuppressWarnings("unchecked")
+    private <T extends Enum<T> & MessageEvent> List<DomainEvent> processKeyRoutedMessage(final Message message, final Class<T>... msgEventClass)
+            throws JsonProcessingException {
+
+        // this should instantiate a bean
+        final List<DomainEvent> domainEvents = convertKeyRoutedMessageToDomainEvent(message, msgEventClass);
+        System.out.println("The list of domain events so far " + domainEvents);
+
+        return domainEvents;
+    }
+
+    /**
+     * Process message broad casted via FanOut, it may or may not be expecting it, so no errors should be thrown.
+     */
+    private <T extends Enum<T> & MessageEvent> List<DomainEvent> processFanOutMessage(Message message, Class<T>[] msgEventClass)
+            throws JsonProcessingException {
+        // this should instantiate a bean
+        final List<DomainEvent> domainEvents = convertFanOutMessageToDomainEvent(message, msgEventClass);
+        System.out.println("The list of domain events so far " + domainEvents);
+
+        return domainEvents;
+    }
+
+    /**
+     * Creates a domain event from a message that is intended to be handled by the receiver.
      * @param <T> The enum type for the message event.
      * @param message The message to create the domain event from.
      * @param msgEventType The enum type for the message event.
      * @return The domain event.
      */
     @SuppressWarnings("unchecked")
-    private <T extends Enum<T> & MessageEvent> List<DomainEvent> convertQueueMessageToDomainEvent(final Message message,
+    private <T extends Enum<T> & MessageEvent> List<DomainEvent> convertKeyRoutedMessageToDomainEvent(final Message message,
             final Class<T>... msgEventType) throws JsonProcessingException {
 
         String messageType = message.getMessageProperties().getType();
@@ -75,7 +114,40 @@ public class AbstractMessageReceiver {
         return domainEvents;
     }
 
-    private void createRecordForMessageReceived(Message message) {
+    /**
+     * Creates a domain event from a message that may or may not to be handled by the receiver.
+     * @param <T> The enum type for the message event.
+     * @param message The message to create the domain event from.
+     * @param msgEventType The enum type for the message event.
+     * @return The domain event.
+     */
+    private <T extends Enum<T> & MessageEvent> List<DomainEvent> convertFanOutMessageToDomainEvent(Message message, Class<T>[] msgEventType)
+            throws JsonProcessingException {
+
+        String messageType = message.getMessageProperties().getType();
+        String messageBody = new String(message.getBody());
+
+        // Determine if the message type is a known message type. If unknown, the message type will be logged and no further action
+        // will be taken.
+        List<Class<? extends DomainEvent>> eventClass = new ArrayList<>();
+        List<DomainEvent> domainEvents = new ArrayList<>();
+        try {
+            MessageEvent.getMsgDomainEventByMessageType(messageType, msgEventType).forEach(t -> eventClass.add(t.getEventClass()));
+        } catch (IllegalArgumentException e) {
+            log.info("Unknown message type: " + messageType);
+            return domainEvents;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        for (Class<? extends DomainEvent> eClass : eventClass) {
+            domainEvents.add(mapper.readValue(messageBody, eClass));
+        }
+
+        return domainEvents;
+    }
+
+    private void createRecordForMessageReceived(final Message message) {
+
         AppContextBeanUtil.getBean(MessageReceivedRepository.class).save(MessageReceived.builder()
                 .correlationId(message.getMessageProperties().getCorrelationId())
                 .messageId(message.getMessageProperties().getMessageId())

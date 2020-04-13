@@ -18,6 +18,6 @@ spring:
   jmx:
     enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3307/user?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&sslMode=DISABLED
+    url: jdbc:mysql://localhost:3307/users?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&sslMode=DISABLED
     username: root
     password: Password123
