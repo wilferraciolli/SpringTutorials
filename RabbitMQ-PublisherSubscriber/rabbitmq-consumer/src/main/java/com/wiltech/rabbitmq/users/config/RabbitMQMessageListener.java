@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.wiltech.core.AbstractMessageReceiver;
 import com.wiltech.messaging.CustomMessageEventReceiverMapperType;
-import com.wiltech.rabbitmq.users.messages.core.ContextMessageEventReceiverMapperType;
+import com.wiltech.rabbitmq.users.messaging.core.ContextMessageEventReceiverMapperType;
 
 import lombok.extern.java.Log;
 

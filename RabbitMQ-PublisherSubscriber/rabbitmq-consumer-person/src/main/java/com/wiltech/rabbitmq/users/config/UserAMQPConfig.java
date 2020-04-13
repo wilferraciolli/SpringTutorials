@@ -1,6 +1,6 @@
 package com.wiltech.rabbitmq.users.config;
 
-import static com.wiltech.common.AMQPUtil.USERS_ROUTING_KEY;
+import static com.wiltech.common.AMQPUtil.PERSON_ROUTING_KEY;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -26,8 +26,8 @@ import com.wiltech.common.AMQPUtil;
 @ComponentScan
 public class UserAMQPConfig {
 
-    private static final String FANOUT_EXCHANGE_QUEUE_NAME = "users-fanout-queue";
-    private static final String DIRECT_EXCHANGE_QUEUE_NAME = "users-queue";
+    private static final String FANOUT_EXCHANGE_QUEUE_NAME = "person-fanout-queue";
+    private static final String DIRECT_EXCHANGE_QUEUE_NAME = "person-queue";
 
     // Deserializer to map json to Java classes
     @Bean
@@ -37,14 +37,14 @@ public class UserAMQPConfig {
 
     // create queue to bind with fanout exchange
     @Bean
-    Queue createUsersFanoutQueue() {
+    Queue createPersonFanoutQueue() {
 
         return new Queue(FANOUT_EXCHANGE_QUEUE_NAME, true);
     }
 
     // create queue for direct messages (command)
     @Bean
-    Queue createUsersDirectQueue() {
+    Queue createPersonDirectQueue() {
 
         return new Queue(DIRECT_EXCHANGE_QUEUE_NAME, true);
     }
@@ -58,10 +58,10 @@ public class UserAMQPConfig {
 
     // create this context direct exchange
     @Bean
-    DirectExchange createUsersDirectExchange() {
+    DirectExchange createPersonDirectExchange() {
 
         return ExchangeBuilder
-                .directExchange(AMQPUtil.USERS_DIRECT_EXCHANGE)
+                .directExchange(AMQPUtil.PERSON_DIRECT_EXCHANGE)
                 .durable(true)
                 .build();
     }
@@ -71,9 +71,9 @@ public class UserAMQPConfig {
     Binding bindUsersFanoutQueueToFanoutExchange() {
 
         return BindingBuilder
-                .bind(createUsersDirectQueue())
-                .to(createUsersDirectExchange())
-                .with(USERS_ROUTING_KEY);
+                .bind(createPersonDirectQueue())
+                .to(createPersonDirectExchange())
+                .with(PERSON_ROUTING_KEY);
     }
 
     // bind the users direct queue to users direct exchange
@@ -81,7 +81,7 @@ public class UserAMQPConfig {
     Binding bindUsersDirectQueueToUsersDirectExchange() {
 
         return BindingBuilder
-                .bind(createUsersFanoutQueue())
+                .bind(createPersonFanoutQueue())
                 .to(createFanoutExchange());
     }
 
@@ -98,7 +98,7 @@ public class UserAMQPConfig {
     MessageListenerContainer messageListenerContainer() {
         final SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory());
-        simpleMessageListenerContainer.setQueues(createUsersFanoutQueue(), createUsersDirectQueue());
+        simpleMessageListenerContainer.setQueues(createPersonFanoutQueue(), createPersonDirectQueue());
         simpleMessageListenerContainer.setMessageListener(new AMQPFanoutMessageListener());
 
         return simpleMessageListenerContainer;

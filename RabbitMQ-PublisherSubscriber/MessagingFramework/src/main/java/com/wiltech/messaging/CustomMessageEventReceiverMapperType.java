@@ -12,7 +12,7 @@ import com.wiltech.core.MessageEvent;
  */
 public enum CustomMessageEventReceiverMapperType implements MessageEvent {
 
-    USER_CREATED("myCustomMessage", CustomMessage.class);
+    CUSTOM_MESSAGE("myCustomMessage", CustomMessage.class);
 
     private final String messageEventType;
     private final Class<? extends DomainEvent> eventClass;

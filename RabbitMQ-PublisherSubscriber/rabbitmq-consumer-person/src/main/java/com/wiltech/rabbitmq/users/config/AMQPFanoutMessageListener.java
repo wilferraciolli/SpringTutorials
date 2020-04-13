@@ -5,7 +5,8 @@ import org.springframework.amqp.core.MessageListener;
 import org.springframework.stereotype.Component;
 
 import com.wiltech.core.AbstractMessageReceiver;
-import com.wiltech.rabbitmq.users.messaging.events.UserMessageReceiverMapperType;
+import com.wiltech.messaging.CustomMessageEventReceiverMapperType;
+import com.wiltech.rabbitmq.users.messaging.events.PersonMessageReceiverMapperType;
 
 import lombok.extern.java.Log;
 
@@ -20,7 +21,9 @@ public class AMQPFanoutMessageListener extends AbstractMessageReceiver implement
     public void onMessage(final Message message) {
 
         log.info("Message received " + new String(message.getBody()));
-        publishDomainEvents(message, new Class[] {UserMessageReceiverMapperType.class});
+
+        // add the custom and person message to simulate multiple event type
+        publishDomainEvents(message, new Class[] {CustomMessageEventReceiverMapperType.class, PersonMessageReceiverMapperType.class});
     }
 
 }
