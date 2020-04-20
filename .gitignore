@@ -111,3 +111,8 @@ Azure Web Hook/.mvn/
 Microservices Template/log/
 *.log
 RabbitMQ-PublisherSubscriber/.idea/
+RabbitMQ-PublisherSubscriber/MessagingFramework/target/classes/com/wiltech/core/DomainEvent.class
+RabbitMQ-PublisherSubscriber/MessagingFramework/.idea/
+RabbitMQ-PublisherSubscriber/MessagingFramework/target/classes/com/wiltech/core/MessageEvent.class
+RabbitMQ-PublisherSubscriber/MessagingFramework/target/classes/com/wiltech/core/MessageReceived$MessageReceivedBuilder.class
+RabbitMQ-PublisherSubscriber/MessagingFramework/target/

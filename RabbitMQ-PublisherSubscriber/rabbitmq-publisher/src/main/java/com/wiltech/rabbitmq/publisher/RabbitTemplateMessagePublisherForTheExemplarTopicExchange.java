@@ -1,7 +1,6 @@
 package com.wiltech.rabbitmq.publisher;
 
 import java.lang.annotation.Annotation;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -17,12 +16,13 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wiltech.rabbitmq.messages.CustomMessageToSend;
+import com.wiltech.messaging.CustomMessage;
 import com.wiltech.rabbitmq.messages.PersonCreatedEvent;
 import com.wiltech.rabbitmq.messages.UserCreatedEvent;
-import com.wiltech.rabbitmq.messages.core.MessageSent;
-import com.wiltech.rabbitmq.messages.core.MessageSentRepository;
 
+/**
+ * This service shows how to post messages to a topic and add a routing key.
+ */
 @Service
 public class RabbitTemplateMessagePublisherForTheExemplarTopicExchange {
 
@@ -31,9 +31,6 @@ public class RabbitTemplateMessagePublisherForTheExemplarTopicExchange {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
-    @Autowired
-    private MessageSentRepository messageSentRepository;
 
     @Value("${spring.application.name}")
     private String applicationName;
@@ -101,7 +98,7 @@ public class RabbitTemplateMessagePublisherForTheExemplarTopicExchange {
 
     private void sendCustomMessage() throws JsonProcessingException {
 
-        final CustomMessageToSend customMessageToSend = CustomMessageToSend.builder()
+        final CustomMessage customMessageToSend = CustomMessage.builder()
                 .id(2000L)
                 .customDescription("Test")
                 .price(4000L)
@@ -132,17 +129,7 @@ public class RabbitTemplateMessagePublisherForTheExemplarTopicExchange {
 
     private void persistDetailsForTheMessageSent(Message message) {
 
-        messageSentRepository.save(MessageSent.builder()
-                .correlationId(message.getMessageProperties().getCorrelationId())
-                .messageId(message.getMessageProperties().getMessageId())
-                .appId(message.getMessageProperties().getAppId())
-                .userId(message.getMessageProperties().getUserId())
-                .eventType(message.getMessageProperties().getType())
-                .replyTo(message.getMessageProperties().getReplyTo())
-                .source(message.getMessageProperties().getHeader("source"))
-                .eventBody(new String(message.getBody()))
-                .sentDateTime(LocalDateTime.now())
-                .build());
+        // code implemented on the library
     }
 
     private String resolveJsonRootName(final Object messageToSend) {

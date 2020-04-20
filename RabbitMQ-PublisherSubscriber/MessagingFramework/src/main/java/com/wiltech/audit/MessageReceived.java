@@ -1,4 +1,4 @@
-package com.wiltech.rabbitmq.messages.core;
+package com.wiltech.audit;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,12 +16,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "messagesent")
+@Table(name = "messagereceived")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageSent implements Serializable {
+public class MessageReceived implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,9 @@ public class MessageSent implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
+    @Column(name = "received_user_id")
+    private String receivedUserId;
+
     @Column
     private String source;
 
@@ -48,9 +51,28 @@ public class MessageSent implements Serializable {
     @Column(name = "event_type")
     private String eventType;
 
+    @Column(name = "content_type")
+    private String contentType;
+
+    @Column(name = "encoding_type")
+    private String encodingType;
+
     @Column(name = "event_body")
     private String eventBody;
 
-    @Column(name = "sent_date_time")
-    private LocalDateTime sentDateTime;
+    @Column(name = "received_exchange")
+    private String receivedExchange;
+
+    @Column(name = "received_routing_key")
+    private String receivedRoutingKey;
+
+    @Column(name = "consumer_tag")
+    private String consumerTag;
+
+    @Column(name = "consumer_queue")
+    private String consumerQueue;
+
+    @Column(name = "received_date_time")
+    private LocalDateTime receivedDateTime;
+
 }

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.wiltech.common.AMQPExchangeKeyRoutingType;
+import com.wiltech.common.DirectExchange;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +22,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @JsonRootName("personCreatedEvent")
+@DirectExchange(AMQPExchangeKeyRoutingType.PERSON_EXCHANGE)
 public class PersonCreatedEvent {
 
     private Long personId;

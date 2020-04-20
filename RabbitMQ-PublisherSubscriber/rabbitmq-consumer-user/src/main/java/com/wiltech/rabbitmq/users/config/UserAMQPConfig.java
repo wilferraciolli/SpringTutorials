@@ -1,7 +1,5 @@
 package com.wiltech.rabbitmq.users.config;
 
-import static com.wiltech.common.AMQPUtil.USERS_ROUTING_KEY;
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -17,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.wiltech.common.AMQPExchangeKeyRoutingType;
 import com.wiltech.common.AMQPUtil;
 
 /**
@@ -61,7 +60,7 @@ public class UserAMQPConfig {
     DirectExchange createUsersDirectExchange() {
 
         return ExchangeBuilder
-                .directExchange(AMQPUtil.USERS_DIRECT_EXCHANGE)
+                .directExchange(AMQPExchangeKeyRoutingType.USER_EXCHANGE.getExchangeName())
                 .durable(true)
                 .build();
     }
@@ -73,7 +72,7 @@ public class UserAMQPConfig {
         return BindingBuilder
                 .bind(createUsersDirectQueue())
                 .to(createUsersDirectExchange())
-                .with(USERS_ROUTING_KEY);
+                .with(AMQPExchangeKeyRoutingType.USER_EXCHANGE.getKeyRouting());
     }
 
     // bind the users direct queue to users direct exchange

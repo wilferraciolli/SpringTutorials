@@ -1,8 +1,10 @@
-package com.wiltech.core;
+package com.wiltech.receiver;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
+
+import com.wiltech.core.DomainEvent;
 
 @Service
 public class EventPublisher implements ApplicationEventPublisherAware {

@@ -4,8 +4,8 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.stereotype.Component;
 
-import com.wiltech.core.AbstractMessageReceiver;
 import com.wiltech.rabbitmq.users.messaging.events.UserMessageReceiverMapperType;
+import com.wiltech.receiver.AbstractMessageReceiver;
 
 import lombok.extern.java.Log;
 

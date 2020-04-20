@@ -1,11 +1,10 @@
-package com.wiltech.messaging;
+package com.wiltech.core;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.wiltech.core.DomainEvent;
-import com.wiltech.core.MessageEvent;
+import com.wiltech.messaging.CustomMessage;
 
 /**
  * Message Event Receiver Mapper Type to demonstrate how to pass an array of message-event mappers.
