@@ -23,7 +23,7 @@
 		<!-- internal lib dependencies -->
 		<dependency>
 			<groupId>com.wiltech</groupId>
-			<artifactId>messaging-framework</artifactId>
+			<artifactId>amqp-broker-framework</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
