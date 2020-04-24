@@ -20,7 +20,8 @@ public class RabbitTemplateMessagePublisherForSendingMessageToUsersDirectExchang
     @Autowired
     private MessagePublisher messagePublisher;
 
-    @Scheduled(fixedRate = 1000L)
+    // send 1 message every second
+    @Scheduled(fixedRate = 60000L)
     public void publishMessage() throws JsonProcessingException {
 
         System.out.println("Publishing message to users direct exchange");
