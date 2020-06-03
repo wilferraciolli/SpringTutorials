@@ -116,3 +116,9 @@ RabbitMQ-PublisherSubscriber/MessagingFramework/.idea/
 RabbitMQ-PublisherSubscriber/MessagingFramework/target/classes/com/wiltech/core/MessageEvent.class
 RabbitMQ-PublisherSubscriber/MessagingFramework/target/classes/com/wiltech/core/MessageReceived$MessageReceivedBuilder.class
 RabbitMQ-PublisherSubscriber/MessagingFramework/target/
+API Rate Limit Bucket4J/.mvn/
+Caching Ehcache/.mvn/
+API Rate Limit Bucket4J/mvnw
+API Rate Limit Bucket4J/mvnw.cmd
+Caching Ehcache/mvnw
+Caching Ehcache/mvnw.cmd
