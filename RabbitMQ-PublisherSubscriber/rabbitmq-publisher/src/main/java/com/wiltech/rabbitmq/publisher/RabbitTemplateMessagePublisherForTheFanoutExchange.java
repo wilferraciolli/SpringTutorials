@@ -14,7 +14,8 @@ public class RabbitTemplateMessagePublisherForTheFanoutExchange {
     @Autowired
     private MessagePublisher messagePublisher;
 
-    @Scheduled(fixedRate = 10000L)
+    // send 1 message every second
+    @Scheduled(fixedRate = 60000L)
     public void publishMessage() throws JsonProcessingException {
 
         System.out.println("Publishing custom message to the fanout exchange");

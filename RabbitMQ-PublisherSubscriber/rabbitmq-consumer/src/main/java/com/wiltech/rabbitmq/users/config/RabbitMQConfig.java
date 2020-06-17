@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,12 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     public static final String QUEUE_NAME = "MyTemplateQueue";
+
+    @Value("${spring.rabbitmq.username}")
+    private String AMQP_USERNAME;
+
+    @Value("${spring.rabbitmq.password}")
+    private String AMQP_PASSWORD;
 
     // Deserializer to map json to Java classes
     @Bean
@@ -67,8 +74,8 @@ public class RabbitMQConfig {
     @Bean
     ConnectionFactory connectionFactory() {
         final CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
-        cachingConnectionFactory.setUsername("guest");
-        cachingConnectionFactory.setPassword("guest");
+        cachingConnectionFactory.setUsername(AMQP_USERNAME);
+        cachingConnectionFactory.setPassword(AMQP_PASSWORD);
 
         return cachingConnectionFactory;
     }

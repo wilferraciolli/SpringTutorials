@@ -9,8 +9,8 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	
-	<name>AMQP Broker Messaging Framework</name>
-	<artifactId>messaging-framework</artifactId>
+	<name>AMQP Broker Framework</name>
+	<artifactId>amqp-broker-framework</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 	

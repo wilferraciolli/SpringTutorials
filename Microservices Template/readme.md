@@ -11,3 +11,9 @@ It has
     Resource Services
    
 
+The users configured to use are
+
+username wil        password password      roles  admin
+username maria      password password      roles operator
+username george     password password      roles admin
+
