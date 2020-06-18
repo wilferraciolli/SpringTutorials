@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -30,7 +29,7 @@ public class Client {
 
     @NotBlank
     @Size(max = 60)
-    private String nome;
+    private String name;
 
     @NotBlank
     @Email
@@ -39,16 +38,11 @@ public class Client {
 
     @NotBlank
     @Size(max = 20)
-    @Column(name = "fone")
-    private String telefone;
+    @Column(name = "telephone")
+    private String telephone;
 
-    public void updateDetails(String nome, String telefone) {
-        this.nome = nome;
-        this.telefone = telefone;
-    }
-
-    @Override
-    public String toString() {
-        return "Client [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone + "]";
+    public void updateDetails(final String nome,final String telephone) {
+        this.name = nome;
+        this.telephone = telephone;
     }
 }

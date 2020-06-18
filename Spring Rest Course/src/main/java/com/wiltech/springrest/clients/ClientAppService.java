@@ -42,7 +42,7 @@ public class ClientAppService {
         Client client = clientRepository.findById(id)
                 .orElse(null);
 
-        client.updateDetails(clientDTO.getNome(), clientDTO.getTelefone());
+        client.updateDetails(clientDTO.getName(), clientDTO.getTelephone());
         clientRepository.saveAndFlush(client);
 
         return convertToDTO(client);
@@ -56,9 +56,9 @@ public class ClientAppService {
     private Client convertToEntity(final ClientDTO clientDTO) {
 
         return Client.builder()
-                .nome(clientDTO.getNome())
+                .name(clientDTO.getName())
                 .email(clientDTO.getEmail())
-                .telefone(clientDTO.getTelefone())
+                .telephone(clientDTO.getTelephone())
                 .build();
     }
 
@@ -66,8 +66,8 @@ public class ClientAppService {
 
         return ClientDTO.builder()
                 .id(client.getId())
-                .nome(client.getNome()).email(client.getEmail())
-                .telefone(client.getTelefone())
+                .name(client.getName()).email(client.getEmail())
+                .telephone(client.getTelephone())
                 .build();
     }
 }

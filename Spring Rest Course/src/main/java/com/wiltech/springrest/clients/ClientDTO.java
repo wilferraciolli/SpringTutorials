@@ -25,7 +25,7 @@ public class ClientDTO {
 
     @NotBlank
     @Size(max = 60)
-    private String nome;
+    private String name;
 
     @ValidateUniqueEmail(allowBlanks = false, message = "Email is already taken")
     @NotBlank
@@ -35,8 +35,5 @@ public class ClientDTO {
 
     @NotBlank
     @Size(max = 20)
-    private String telefone;
-
-
-
+    private String telephone;
 }
