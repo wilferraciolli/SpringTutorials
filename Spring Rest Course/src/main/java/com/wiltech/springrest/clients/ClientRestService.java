@@ -2,14 +2,19 @@ package com.wiltech.springrest.clients;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientRestService {
 
     @Autowired
-    private ClientRestAppService appService;
+    private ClientAppService appService;
 
     @GetMapping
     public List<ClientDTO> findAll() {
@@ -25,27 +30,31 @@ public class ClientRestService {
         return appService.findAll();
     }
 
-    @PostMapping("/")
-    public List<ClientDTO> create(final ClientDTO clientDTO) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClientDTO create(@Valid @RequestBody final ClientDTO clientDTO) {
 
-        return appService.findAll();
+        // should be created
+        return appService.create(clientDTO);
     }
 
-    @GetMapping("{id}")
-    public List<ClientDTO> findById(@PathParam("id") final Long id) {
+    @GetMapping("/{id}")
+    public ClientDTO findById(@PathVariable("id") final Long id) {
 
-        return appService.findAll();
+        return appService.findById(id);
     }
 
-    @PutMapping("{id}")
-    public List<ClientDTO> update(@PathParam("id") final Long id, final ClientDTO clientDTO) {
+    @PutMapping("/{id}")
+    public ClientDTO update(@PathVariable("id") final Long id, @Valid @RequestBody final ClientDTO clientDTO) {
 
-        return appService.findAll();
+        return appService.update(id, clientDTO);
     }
 
-    @DeleteMapping("{id}")
-    public List<ClientDTO> deleteById(@PathParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") final Long id) {
 
-        return appService.findAll();
+        appService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
