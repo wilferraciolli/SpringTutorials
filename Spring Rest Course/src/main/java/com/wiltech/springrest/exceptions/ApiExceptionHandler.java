@@ -61,6 +61,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private PropertyField buildPropertyFieldError(ObjectError error) {
 
-        return new PropertyField(((FieldError) error).getField(), messageSource.getMessage(error, LocaleContextHolder.getLocale()));
+        return new PropertyField(((FieldError) error).getField(),((FieldError) error).getRejectedValue(),  messageSource.getMessage(error, LocaleContextHolder.getLocale()));
     }
 }

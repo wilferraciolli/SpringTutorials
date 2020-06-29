@@ -2,6 +2,7 @@ package com.wiltech.springrest.clients;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.wiltech.springrest.validation.ValidateUniqueEmail;
@@ -23,17 +24,17 @@ public class ClientDTO {
 
     private Long id;
 
-    @NotBlank
-    @Size(max = 60)
+    @NotNull(message = "{Client.name.Blank}")
+    @Size(min = 2, max = 60, message = "{Client.name.Size}")
     private String name;
 
-    @ValidateUniqueEmail(allowBlanks = false, message = "Email is already taken")
-    @NotBlank
-    @Email
+    @ValidateUniqueEmail(message = "{Client.email.NonUnique}")
+    @NotNull(message = "{Client.email.Blank}")
+    @Email(message = "{Client.email.Invalid}")
     @Size(max = 255)
     private String email;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "{Client.telephone.size}")
+    @Size(max = 20, message = "{Client.telephone.Size}")
     private String telephone;
 }

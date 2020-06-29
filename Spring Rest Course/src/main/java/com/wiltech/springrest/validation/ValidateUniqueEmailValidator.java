@@ -36,7 +36,6 @@ public class ValidateUniqueEmailValidator implements ConstraintValidator<Validat
         } else {
 
             return !clientRepository.findByEmail(value).isPresent();
-
         }
     }
 }
