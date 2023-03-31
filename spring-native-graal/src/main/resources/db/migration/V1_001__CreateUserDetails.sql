@@ -1,5 +1,5 @@
-drop table IF EXISTS user;
-create TABLE user
+drop table IF EXISTS users;
+create TABLE users
 (
     id       BIGINT NOT NULL auto_increment,
     username VARCHAR(255),
@@ -34,6 +34,6 @@ SELECT u.id,
        u.password,
        p.date_of_birth,
        u.active
-FROM user u,
+FROM users u,
      person p
 WHERE u.id = p.user_id;
