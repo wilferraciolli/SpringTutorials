@@ -1,0 +1,6 @@
+--insert into users(id, role_type, first_name, last_name, username, password, active)
+--values (1000, 'ADMIN', 'Wiliam', 'Ferraciolli', 'WilFerraciolli@wiltech.com', '{bcrypt}$2a$10$2WacIN6u7bxhQOkx9gxPAOaTZjab0GCzoCSdJF7HU5ajf5CC4hgga', 1);
+--
+--insert into users(id, role_type, first_name, last_name, username, password, active)
+--values (1001, 'USER', 'Maria', 'Georgiou', 'Maria@wiltech.com', '{bcrypt}$2a$10$2WacIN6u7bxhQOkx9gxPAOaTZjab0GCzoCSdJF7HU5ajf5CC4hgga', 1);
+--
