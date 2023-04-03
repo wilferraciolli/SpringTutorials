@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users", produces = "application/json")
+@RequestMapping(value = "/iam/users", produces = "application/json")
 public class UserRestService {
 
     @Autowired

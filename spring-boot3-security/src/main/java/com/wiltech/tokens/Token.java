@@ -17,9 +17,7 @@ import lombok.NoArgsConstructor;
 public class Token {
 
     @Id
-//    @GeneratedValue
-    public Integer id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     public String token;
 
@@ -30,7 +28,7 @@ public class Token {
 
     public Boolean expired;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     public User user;
 }

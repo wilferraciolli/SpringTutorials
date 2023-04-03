@@ -16,8 +16,8 @@ create TABLE token
 (
     id                   BIGINT       NOT NULL auto_increment,
     user_id              BIGINT       NOT NULL,
-    token                VARCHAR(2000) NOT NULL,
-    token_type           VARCHAR(25) NOT NULL,
+    token                VARCHAR(2000)  NULL,
+    token_type           VARCHAR(25)  NULL,
     revoked              BIT,
     expired              BIT,
     PRIMARY KEY (id)

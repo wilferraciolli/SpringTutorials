@@ -22,7 +22,7 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class User implements UserDetails {
 
     private Boolean active;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Token> tokens;
 
     public void update(String firstName) {

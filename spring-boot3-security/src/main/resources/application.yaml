@@ -1,7 +1,7 @@
 server:
   port: 5001
   servlet:
-    context-path: /api/v1/
+    context-path: /api/
 
 spring:
   application:
