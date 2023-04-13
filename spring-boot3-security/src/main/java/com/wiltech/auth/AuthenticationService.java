@@ -13,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -29,6 +32,7 @@ public class AuthenticationService {
                 .username(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roleType(RoleType.USER)
+                .active(true)
                 .build();
 
         var savedUser = repository.save(user);
@@ -70,12 +74,16 @@ public class AuthenticationService {
 
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (validUserTokens.isEmpty())
+        if (validUserTokens.isEmpty()) {
             return;
-        validUserTokens.forEach(token -> {
-            token.setExpired(true);
-            token.setRevoked(true);
-        });
+        }
+
+        validUserTokens.stream()
+                .filter(Objects::nonNull)
+                .forEach(token -> {
+                    token.setExpired(true);
+                    token.setRevoked(true);
+                });
         tokenRepository.saveAll(validUserTokens);
     }
 }
