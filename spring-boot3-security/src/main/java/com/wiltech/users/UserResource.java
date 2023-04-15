@@ -10,13 +10,13 @@ import java.util.List;
 
 @Data
 @Builder
-@JsonTypeName("user")
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+//@JsonTypeName("user")
+//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class UserResource {
 
     private Long id;
 
-    //    @NotNull
+//        @NotNull
 //    @Size(max = 80, message = "First name cannot have more than {max} characters")
     private String firstName;
 
@@ -32,7 +32,6 @@ public class UserResource {
     //    @NotNull(message = "Password cannot be null.")
     private String password;
 
-    private LocalDate dateOfBirth;
 
     //    @NotNull(message = "Active cannot be null.")
     private Boolean active;

@@ -1,6 +1,7 @@
 package com.wiltech.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,11 +17,12 @@ public class UserAppService {
     public List<UserResource> findUsers() {
         return this.repository.findAll().stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-
     public UserResource create(final UserResource userResourceCreate) {
+
+        // This method errors as this needs to be the same logic used on the Authentication serveice
         final User user = User.builder()
                 .username(userResourceCreate.getUsername())
                 .password("password")
@@ -58,11 +60,10 @@ public class UserAppService {
     private UserResource convertToDTO(final User user) {
         return UserResource.builder()
                 .id(user.getId())
-                .firstName(user.getUsername())
-                .lastName(user.getUsername())
-                .dateOfBirth(LocalDate.now())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .active(user.getActive())
-                .roleIds(List.of("Role1", "Role2"))
+                .roleIds(user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .build();
     }
 }
