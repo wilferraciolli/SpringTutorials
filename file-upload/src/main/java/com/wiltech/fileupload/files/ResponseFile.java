@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseFile {
+    private String id;
     private String name;
     private String url;
     private String type;

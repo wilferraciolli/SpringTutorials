@@ -27,16 +27,23 @@ public class FileRestService {
     private FileService storageService;
 
     @PostMapping("")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
-        String message = "";
-        try {
-            storageService.store(file);
+    public ResponseEntity<ResponseFile> uploadFile(@RequestParam("file") MultipartFile file) {
 
-            message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+        try {
+            File store = storageService.store(file);
+
+            ResponseFile responseFile = new ResponseFile(
+                    store.getId(),
+                    store.getName(),
+                    null,
+                    store.getType(),
+                    store.getData().length);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(responseFile);
         } catch (Exception e) {
-            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
         }
     }
 
@@ -51,6 +58,7 @@ public class FileRestService {
                             .toUriString();
 
                     return new ResponseFile(
+                            dbFile.getId(),
                             dbFile.getName(),
                             fileDownloadUri,
                             dbFile.getType(),
