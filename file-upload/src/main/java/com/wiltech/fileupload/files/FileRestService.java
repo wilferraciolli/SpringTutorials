@@ -1,5 +1,6 @@
 package com.wiltech.fileupload.files;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,12 +69,16 @@ public class FileRestService {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/download")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         File fileDB = storageService.getFile(id).get();
 
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
+//                .body(fileDB.getData());
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
+                .contentType(MediaType.valueOf(fileDB.getType()))
                 .body(fileDB.getData());
     }
 }

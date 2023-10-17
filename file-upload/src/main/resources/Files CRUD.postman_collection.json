@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "5c9fcff7-7ef3-4ad3-9317-47c8dc7a29e3",
+		"name": "Files CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "78090"
+	},
+	"item": [
+		{
+			"name": "POST create files",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/ferraciolliw/OneDrive - MHR/Pictures/dream house.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/files",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GETALL files",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/files",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET file by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/files/{{id}}/download",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"{{id}}",
+						"download"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,5 +1,6 @@
 package com.wiltech.fileupload.files;
 
+import com.wiltech.fileupload.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,14 +20,21 @@ public class FileService {
         File fileToCreate = File.builder()
                 .name(fileName)
                 .type(file.getContentType())
-                .data(file.getBytes())
+                .data(ImageUtils.compressImage(file.getBytes()))
                 .build();
 
         return fileRepository.save(fileToCreate);
     }
 
     public Optional<File> getFile(String id) {
-        return fileRepository.findById(id);
+        // decompress the image
+        return fileRepository.findById(id)
+                .map(file -> File.builder()
+                        .id(file.getId())
+                        .name(file.getName())
+                        .type(file.getType())
+                        .data(ImageUtils.decompressImage(file.getData()))
+                        .build());
     }
 
     public List<File> getAllFiles() {
