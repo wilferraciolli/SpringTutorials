@@ -5,21 +5,25 @@ The following was discovered as part of building this project:
 
 # Getting Started
 
-### Reference Documentation
-For further reference, please consider the following sections:
+curl https://start.spring.io/starter.tgz -d dependencies=cloud-config-client,actuator,web \
+-d language=java -d type=maven-project -d baseDir=spring-cloud-config-client | tar -xzvf -
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.2.4/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.2.4/maven-plugin/reference/html/#build-image)
-* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/3.2.4/reference/htmlsingle/index.html#actuator)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.2.4/reference/htmlsingle/index.html#web)
-* [Config Client Quick Start](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#_client_side_usage)
+pushd spring-cloud-config-client
+chmod +x mvnw
 
-### Guides
-The following guides illustrate how to use some features concretely:
+     echo "Set up Controllers, Services & properties etc. Check the snippets above"
 
-* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+     ./mvnw clean install
 
+     echo "Running the application"
+     java -jar target/*.jar
+
+     echo "Waiting for the application to start..."
+
+     curl localhost:7654/refreshed
+     # you should get: "bar with foo profile value from Vault"
+     curl localhost:7654/configprop
+     # you should get: "bar with foo profile value for config prop from git"
+     curl localhost:7654/encrypted
+     # you should get: "my secret"
+popd
