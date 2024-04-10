@@ -1,0 +1,41 @@
+### Send 3  requests - should return <test>, <test> and <default> values and no logging
+GET localhost:8080/refreshed
+###
+GET localhost:8080/nonrefreshed
+###
+GET localhost:8080/configprop
+
+# Change the values on the properties-foo file
+
+###     echo "Send 3  requests - nothing should change - same values, no logging"
+GET localhost:8080/refreshed
+###
+GET localhost:8080/nonrefreshed
+###
+GET localhost:8080/configprop
+
+
+
+### Send a POSt to refresh the config app properties values
+POST localhost/actuator/refresh
+
+
+### Send 3  requests - should return <new value>, <test>, <new value for config prop>
+### Also DEBUG, INFO and WARN logs should be there in the application output
+GET localhost:8080/refreshed
+###
+GET localhost:8080/nonrefreshed
+###
+GET localhost:8080/configprop
+
+
+
+
+
+
+
+
+
+
+
+
