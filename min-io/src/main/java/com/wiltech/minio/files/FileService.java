@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -179,7 +180,7 @@ public class FileService {
         return new FileStatDTO(
                 stat.contentType(),
                 stat.size() / 1000,
-                stat.lastModified(),
+                stat.lastModified().toInstant().truncatedTo(ChronoUnit.SECONDS),
                 stat.userMetadata());
     }
 }
