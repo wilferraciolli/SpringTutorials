@@ -14,9 +14,11 @@ public class FileRestService {
     private FileService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> upload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "path", defaultValue = "") String path) {
         try {
-            return ResponseEntity.ok(fileService.uploadFile(file));
+            return ResponseEntity.ok(fileService.uploadFile(file, path));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body("Upload failed: " + e.getMessage());
@@ -32,8 +34,19 @@ public class FileRestService {
         }
     }
 
+    @GetMapping("/allinpath")
+    public ResponseEntity<List<String>> listFilesInPAth(
+            @RequestParam(value = "path", defaultValue = "") String path) {
+        try {
+            return ResponseEntity.ok(fileService.listFilesByPath(path));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<String> getDownloadLink(@PathVariable String fileName) {
+    public ResponseEntity<String> getDownloadLink(
+            @PathVariable String fileName) {
         try {
             if (!fileService.doesFileExist(fileName)) {
                 return ResponseEntity.status(404).body("File not found: " + fileName);
