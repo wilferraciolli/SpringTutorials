@@ -27,9 +27,9 @@ public class FileService {
     /**
      * Important Tips for Paths
      * Leading Slashes: Avoid starting paths with a slash (e.g., use avatars/ instead of /avatars/). Some S3 tools treat the leading slash as a literal character, creating an empty-named root folder.
-     *
+     * <p>
      * The "Folder" Illusion: If you delete all files inside uploads/images/, the "folder" will disappear from the MinIO UI. This is because the folder only exists as long as there is an object using that prefix.
-     *
+     * <p>
      * Organizing by Date: A common pattern is YYYY/MM/DD/uuid.ext. This makes it very easy to run cleanup scripts on old data later.
      */
     public String uploadFile(final MultipartFile file, final String path) throws Exception {
@@ -51,7 +51,7 @@ public class FileService {
                 ? path : path + "/";
 
         String originalFileName = file.getOriginalFilename();
-        String extension =  originalFileName.contains(".")
+        String extension = originalFileName.contains(".")
                 ? originalFileName.substring(originalFileName.lastIndexOf("."))
                 : "";
         String uuidName = UUID.randomUUID() + extension;
@@ -160,7 +160,26 @@ public class FileService {
                         .build()
         );
 
+        System.out.println(stat.lastModified());
+        System.out.println(stat.size());
+        System.out.println(stat.contentType());
+
         // MinIO prefixes user metadata with "X-Amz-Meta-", so make sure to manage it
         return stat.userMetadata().get(ORIGINAL_FILENAME);
+    }
+
+    public FileStatDTO getFileStat(String uuidName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        StatObjectResponse stat = minioClient.statObject(
+                StatObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(uuidName)
+                        .build()
+        );
+
+        return new FileStatDTO(
+                stat.contentType(),
+                stat.size() / 1000,
+                stat.lastModified(),
+                stat.userMetadata());
     }
 }

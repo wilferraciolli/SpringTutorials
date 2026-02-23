@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/files")
@@ -57,6 +58,23 @@ public class FileRestService {
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body("Error generating link: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{uuidName}/stat")
+    public ResponseEntity<FileStatDTO> getFileStat(
+            @PathVariable String uuidName) {
+        try {
+            if (!fileService.doesFileExist(uuidName)) {
+                return ResponseEntity.status(404)
+                        .body(new FileStatDTO("File not found: " + uuidName, 0, null, Map.of()));
+            }
+
+            FileStatDTO dto = fileService.getFileStat(uuidName);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(new FileStatDTO(e.getMessage(), 0, null, Map.of()) );
         }
     }
 
