@@ -1,9 +1,28 @@
 # GraphQL queries
 
-POST localhost:8080
-query {
-userDetails(username: "admin") {
-email
-roleNames
+### Get All User Details (Discovery)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query { __schema { queryType { fields { name type { name kind } } } } }"
 }
+
+### Query User Details with Filter
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query GetUsers($name: String) { userDetails(username: $name) { username email roleNames } }",
+  "variables": {
+    "name": "user_50"
+  }
+}
+
+### Query New Order Summaries (The new view)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "{ orderSummaries(status: \"COMPLETED\") { username totalAmount status } }"
 }

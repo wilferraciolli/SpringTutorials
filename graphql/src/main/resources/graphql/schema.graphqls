@@ -1,6 +1,7 @@
 type Query {
     # The Querydsl integration allows you to pass fields as arguments for filtering
     userDetails(username: String, email: String, roleNames: String): [UserDetailsView]
+    orderSummaries(username: String, status: String): [OrderSummaryView]
 }
 
 type UserDetailsView {
@@ -8,4 +9,10 @@ type UserDetailsView {
     username: String
     email: String
     roleNames: String
+}
+
+type OrderSummaryView {
+    username: String
+    totalAmount: Float
+    status: String
 }

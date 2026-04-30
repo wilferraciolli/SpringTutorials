@@ -1,0 +1,39 @@
+### Get users and order
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query GetUserDashboard($name: String!) { user: userDetails(username: $name) { email roleNames } summary: orderSummaries(username: $name) { totalAmount status } }",
+  "variables": {
+    "name": "user_42"
+  }
+}
+
+### Get completed orders
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query CompareOrders($name: String) { completed: orderSummaries(username: $name, status: \"COMPLETED\") { totalAmount } pending: orderSummaries(username: $name, status: \"PENDING\") { totalAmount } }",
+  "variables": {
+    "name": "user_10"
+  }
+}
+
+
+### Compleed orders by hr admin
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query AdminCheck { admins: userDetails(roleNames: \"ROLE_ADMIN\") { username email } highValueOrders: orderSummaries(status: \"COMPLETED\") { username totalAmount } }"
+}
+
+
+### Fragment request
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query { userDetails(username: \"user_1\") { ...UserFields } } fragment UserFields on UserDetailsView { username email roleNames }"
+}
