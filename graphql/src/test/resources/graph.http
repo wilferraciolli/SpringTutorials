@@ -1,0 +1,9 @@
+# GraphQL queries
+
+POST localhost:8080
+query {
+userDetails(username: "admin") {
+email
+roleNames
+}
+}

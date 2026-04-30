@@ -1,0 +1,11 @@
+type Query {
+    # The Querydsl integration allows you to pass fields as arguments for filtering
+    userDetails(username: String, email: String, roleNames: String): [UserDetailsView]
+}
+
+type UserDetailsView {
+    id: ID
+    username: String
+    email: String
+    roleNames: String
+}

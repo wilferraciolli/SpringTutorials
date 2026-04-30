@@ -1,6 +1,6 @@
 -- This view aggregates users and their roles into a single searchable entity
 CREATE
-OR REPLACE VIEW user_details AS
+OR REPLACE VIEW user_details_v AS
 SELECT u.id,
        u.username,
        u.email,
