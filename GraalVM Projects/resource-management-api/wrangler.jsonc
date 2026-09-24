@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "resource-management-api",
+  "main": "src/cloudflare_entry.py",
+  "compatibility_date": "2026-09-13",
+  "compatibility_flags": ["python_workers"],
+  "observability": {
+    "enabled": true
+  },
+  "keep_vars": true,
+  "vars": {
+    "DATABASE_MODE": "d1_http",
+    "CLERK_JWKS_URL": "https://lasting-colt-8233.clerk.accounts.dev/.well-known/jwks.json",
+    "CF_ACCOUNT_ID": "cdf9d22a2cdb1c83c99d5ca71a3ba492",
+    "CF_D1_DATABASE_ID": "35b956a8-6bd4-4cfd-bfb3-83102682631a"
+  }
+}

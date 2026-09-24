@@ -122,3 +122,9 @@ API Rate Limit Bucket4J/mvnw
 API Rate Limit Bucket4J/mvnw.cmd
 Caching Ehcache/mvnw
 Caching Ehcache/mvnw.cmd
+/.idea/.gitignore
+/.idea/checkstyle-idea.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/sqldialects.xml
+/.idea/vcs.xml

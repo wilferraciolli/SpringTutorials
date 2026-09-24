@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Bed board — dev UI (dummy, not the real app)</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.25rem; }
+  #banner { background: #fff3cd; border: 1px solid #ffe69c; padding: 0.5rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+  #sign-in { max-width: 400px; margin: 2rem auto; }
+  #app { display: none; }
+  #topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  button { cursor: pointer; border: 1px solid #ccc; background: white; border-radius: 6px; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+  button:hover { background: #f0f0f0; }
+  button.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .bed { border: 1px solid #ddd; border-radius: 10px; padding: 1rem; }
+  .bed.overdue { border-color: #d33; background: #fff5f5; }
+  .bed h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+  .ward { color: #666; font-size: 0.8rem; margin-bottom: 0.75rem; }
+  .status-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .status-ready { background: #d4edda; color: #155724; }
+  .status-preparing { background: #fff3cd; color: #856404; }
+  .status-occupied { background: #f8d7da; color: #721c24; }
+  .overdue-flag { color: #d33; font-weight: 700; font-size: 0.8rem; }
+  .minutes { color: #666; font-size: 0.8rem; }
+  .actions { display: flex; gap: 0.35rem; margin-top: 0.75rem; flex-wrap: wrap; }
+  #error { color: #d33; margin: 1rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Bed board — dev UI</h1>
+<div id="banner">
+  Dummy test page, not the real Angular app. Talks to the API at
+  <code id="api-base-label"></code>. Requires Clerk sign-in — real session
+  tokens, not the forged ones used to test auth failure paths earlier.
+</div>
+
+<div id="sign-in"></div>
+
+<div id="app">
+  <div id="topbar">
+    <span id="whoami"></span>
+    <button id="sign-out">Sign out</button>
+  </div>
+  <div id="error"></div>
+  <div class="grid" id="beds"></div>
+</div>
+
+<script>
+  // ---- config: fill these in from your Clerk dashboard (API Keys page) ----
+  const CLERK_FRONTEND_API = "lasting-colt-8233.clerk.accounts.dev";
+  const CLERK_PUBLISHABLE_KEY = "pk_test_bGFzdGluZy1jb2x0LTgyMzMuY2xlcmsuYWNjb3VudHMuZGV2JA";
+  const API_BASE = "http://localhost:8001";
+  // ---------------------------------------------------------------------
+
+  document.getElementById("api-base-label").textContent = API_BASE;
+
+  const STATUSES = ["ready", "preparing", "occupied"];
+  let pollTimer = null;
+
+  function loadClerkScript() {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.dataset.clerkPublishableKey = CLERK_PUBLISHABLE_KEY;
+      script.src = `https://${CLERK_FRONTEND_API}/npm/@clerk/clerk-js@latest/dist/clerk.browser.js`;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  async function main() {
+    await loadClerkScript();
+    await window.Clerk.load();
+
+    if (window.Clerk.user) {
+      showApp();
+    } else {
+      window.Clerk.mountSignIn(document.getElementById("sign-in"));
+      window.Clerk.addListener(({ user }) => {
+        if (user) {
+          document.getElementById("sign-in").innerHTML = "";
+          showApp();
+        }
+      });
+    }
+  }
+
+  function showApp() {
+    document.getElementById("sign-in").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("whoami").textContent =
+      "Signed in as " + (window.Clerk.user.primaryEmailAddress?.emailAddress ?? window.Clerk.user.id);
+    document.getElementById("sign-out").onclick = () => window.Clerk.signOut().then(() => location.reload());
+
+    refreshBeds();
+    pollTimer = setInterval(refreshBeds, 15000);
+  }
+
+  async function authedFetch(path, options = {}) {
+    const token = await window.Clerk.session.getToken();
+    const resp = await fetch(API_BASE + path, {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!resp.ok) {
+      throw new Error(`${options.method || "GET"} ${path} -> ${resp.status}: ${await resp.text()}`);
+    }
+    return resp.json();
+  }
+
+  async function refreshBeds() {
+    const errorEl = document.getElementById("error");
+    try {
+      const beds = await authedFetch("/beds");
+      errorEl.textContent = "";
+      renderBeds(beds);
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  }
+
+  async function setStatus(bedId, status) {
+    try {
+      await authedFetch(`/beds/${bedId}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      refreshBeds();
+    } catch (err) {
+      document.getElementById("error").textContent = err.message;
+    }
+  }
+
+  function renderBeds(beds) {
+    const container = document.getElementById("beds");
+    container.innerHTML = "";
+    for (const bed of beds) {
+      const card = document.createElement("div");
+      card.className = "bed" + (bed.is_overdue ? " overdue" : "");
+
+      const minutesLine =
+        bed.status === "occupied"
+          ? `<div class="minutes">${bed.occupied_minutes} min occupied${bed.is_overdue ? " — <span class='overdue-flag'>OVERDUE</span>" : ""}</div>`
+          : "";
+
+      card.innerHTML = `
+        <h3>${bed.label}</h3>
+        <div class="ward">${bed.ward}</div>
+        <span class="status-badge status-${bed.status}">${bed.status}</span>
+        ${minutesLine}
+        <div class="actions"></div>
+      `;
+
+      const actions = card.querySelector(".actions");
+      for (const status of STATUSES) {
+        const btn = document.createElement("button");
+        btn.textContent = status;
+        if (status === bed.status) btn.classList.add("active");
+        btn.onclick = () => setStatus(bed.id, status);
+        actions.appendChild(btn);
+      }
+
+      container.appendChild(card);
+    }
+  }
+
+  main().catch((err) => {
+    document.body.innerHTML =
+      "<p style='color:#d33'>Failed to load Clerk: " + err.message + "</p>";
+  });
+</script>
+
+</body>
+</html>
