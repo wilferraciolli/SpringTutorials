@@ -1,0 +1,58 @@
+### Variables
+@host = http://localhost:5001/api/admin/providers
+@providerId = 4a3cdbd5-726e-459b-8a93-66af5adef34a
+
+### 1. Get Provider Template (metadata & empty template)
+GET {{host}}/template
+Accept: application/json
+
+###
+
+### 2. Create a new Provider
+POST {{host}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Admiral Insurance",
+  "email": "contact@admiral.com",
+  "phoneNumber": "+44 333 220 2000",
+  "website": "https://www.admiral.com",
+  "providerTypeId": "CAR_INSURANCE"
+}
+
+###
+
+### 3. Get all Providers
+GET {{host}}
+Accept: application/json
+
+###
+
+### 4. Get Provider by ID
+GET {{host}}/{{providerId}}
+Accept: application/json
+
+###
+
+### 5. Update an existing Provider
+PUT {{host}}/{{providerId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{providerId}}",
+  "name": "Admiral Insurance UK",
+  "email": "support@admiral.com",
+  "phoneNumber": "+44 333 220 2001",
+  "website": "https://www.admiral.co.uk",
+  "providerTypeId": "CAR_INSURANCE"
+}
+
+###
+
+### 6. Delete Provider by ID
+DELETE {{host}}/{{providerId}}
+Accept: application/json
+
+###

@@ -1,0 +1,14 @@
+target/
+# ...but keep the compiled native binary: Dockerfile.runtime COPYs it in from
+# a CI-built target/ (Dockerfile.native builds its own inside the image and
+# doesn't touch this path).
+!target/insurly-api
+.git/
+.idea/
+*.iml
+.env
+.env.*
+!.env.example
+HELP.md
+README.md
+docs/

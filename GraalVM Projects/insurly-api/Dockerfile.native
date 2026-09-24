@@ -1,0 +1,55 @@
+# Self-contained native-image build of insurly-api.
+#
+# Produces a ~90-140 MB standalone executable that boots in ~100 ms and idles
+# around ~100 MB RAM -- so it fits the free tiers a Spring-Boot-on-JVM build
+# keeps OOM-ing on (Fly 256 MB, Render / Koyeb 512 MB, Cloud Run scale-to-zero).
+#
+#   docker build -f Dockerfile.native -t insurly-api:native .
+#   docker run --rm -p 5001:5001 --env-file .env insurly-api:native
+#
+# The GraalVM compile stage needs ~8 GB RAM available to Docker. If your local
+# Docker can't spare that, don't build here -- let CI do it
+# (.github/workflows/native-image.yml) and pull the image from GHCR instead.
+#
+# Dockerfile (JVM) is still the simpler artifact whenever you have >= 512 MB
+# and don't care about a ~4-8 s cold start.
+
+FROM ghcr.io/graalvm/native-image-community:25 AS build
+WORKDIR /app
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
+RUN ./mvnw -B -Pnative -DskipTests dependency:go-offline || true
+COPY src ./src
+
+# Spring AOT refreshes the application context at BUILD time to generate the
+# native reachability config, so every property referenced by an active
+# @Conditional has to resolve *now* -- even though the real values are read
+# from the environment at runtime. Two things follow:
+#   1. Build under SPRING_PROFILES_ACTIVE=prod so the AOT-baked context matches
+#      what the container actually runs (prod beans; no @Profile("local")
+#      fallbacks like HeaderUserIdentityResolver baked into the image).
+#   2. Supply throwaway placeholders for every env var that has no default in
+#      application*.yaml. These are compile-time only -- they are NOT in the
+#      runtime image and are overridden by the real environment at startup.
+ENV SPRING_PROFILES_ACTIVE=prod \
+    DATABASE_URL=jdbc:postgresql://aot-build.invalid:5432/insurly \
+    DATABASE_USERNAME=aot \
+    DATABASE_PASSWORD=aot \
+    CORS_ALLOWED_ORIGIN=https://aot-build.invalid \
+    AUTH_ISSUER_URI=https://aot-build.invalid
+
+RUN ./mvnw -B -Pnative -DskipTests native:compile
+
+# The native binary dynamically links glibc + libz, and needs CA certs for the
+# outbound HTTPS to Clerk JWKS and Supabase. debian:12-slim has glibc + zlib1g
+# already; ca-certificates is the only add. (distroless/cc looks tempting but
+# ships no zlib, and distroless/base no libz either -- not worth the whack-a-mole
+# for ~40 MB when the win here is RAM, not image size.)
+FROM debian:12-slim
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build /app/target/insurly-api /app/insurly-api
+EXPOSE 5001
+ENTRYPOINT ["/app/insurly-api"]

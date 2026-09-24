@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <body
+    th:replace="~{email/_layout :: page('Your quotes', 'Your car insurance quotes are ready', ~{::content})}"
+  >
+    <div th:fragment="content">
+      <h1 style="margin: 0 0 4px; font-size: 20px; color: #17171c; letter-spacing: -0.01em">
+        Your car insurance quotes
+      </h1>
+      <p style="margin: 0 0 18px; color: #6b6b76">
+        <span th:if="${!m.firstName().isEmpty()}"
+          >Hi <span th:text="${m.firstName()}">there</span> &mdash; </span
+        >here are your top options based on what you told us.
+      </p>
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr th:each="opt : ${m.options()}">
+          <td style="padding-bottom: 10px">
+            <table
+              role="presentation"
+              width="100%"
+              cellpadding="0"
+              cellspacing="0"
+              th:style="'border:1px solid ' + (${opt.highlighted()} ? '#ff6a3d' : '#e2ddd4') + ';background:' + (${opt.highlighted()} ? '#fff0ea' : '#ffffff') + ';'"
+            >
+              <tr>
+                <td style="padding: 14px 16px">
+                  <span
+                    style="display: inline-block; min-width: 20px; text-align: center; background: #17171c; color: #ffffff; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 999px"
+                    th:text="${opt.rank()}"
+                    >1</span
+                  >
+                  <span style="font-weight: 700; color: #17171c; margin-left: 8px" th:text="${opt.name()}"
+                    >Standard cover</span
+                  >
+                  <span
+                    th:if="${opt.highlighted()}"
+                    style="float: right; font-size: 11px; font-weight: 700; color: #ff6a3d; text-transform: uppercase; letter-spacing: 0.06em"
+                    >Best value</span
+                  >
+                  <div style="margin-top: 6px">
+                    <span style="font-size: 22px; font-weight: 700; color: #17171c" th:text="${opt.annualPremium()}"
+                      >£768/yr</span
+                    >
+                    <span style="color: #6b6b76; font-size: 13px; margin-left: 8px" th:text="${opt.monthlyPremium()}"
+                      >£64/mo</span
+                    >
+                  </div>
+                  <div style="margin-top: 4px; color: #6b6b76; font-size: 13px" th:text="${opt.coverSummary()}">
+                    Comprehensive · £500 excess · 50/100/50 liability
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin: 16px 0 18px; color: #6b6b76; font-size: 13px">
+        <span th:if="${!m.validUntil().isEmpty()}"
+          >These prices hold until <span th:text="${m.validUntil()}">1 Oct 2026</span>. </span
+        >Indicative only &mdash; not a policy offer, and no one will call you.
+      </p>
+
+      <a
+        th:href="${m.reviewUrl()}"
+        style="display: inline-block; background: #4f46e5; color: #ffffff; text-decoration: none; padding: 11px 20px; border-radius: 8px; font-weight: 600; font-size: 14px"
+        >Review &amp; continue</a
+      >
+    </div>
+  </body>
+</html>

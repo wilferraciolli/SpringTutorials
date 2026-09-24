@@ -1,0 +1,85 @@
+server:
+  servlet:
+    context-path: /api/
+
+spring:
+  application:
+    name: insurly-api
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  config:
+    import: optional:file:.env[.properties]
+  # Thymeleaf is used only to render email bodies — never as an MVC view layer.
+  thymeleaf:
+    check-template-location: false
+  # SMTP transport for the email seam (docs/07-notifications.md §5). Only used
+  # when app.email.enabled=true — see JavaMailEmailSender / EmailConfig.
+  # These are just fallbacks; the real host/credentials come from MAIL_* in
+  # .env. Local dev -> a Mailtrap sandbox inbox; production -> any free SMTP
+  # provider (SMTP2GO, Mailjet, Resend, ...). See .env.example.
+  mail:
+    host: ${MAIL_HOST:mail.smtp2go.com}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:true}
+        transport:
+          protocol: smtp
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Clerk's Frontend API URL, e.g. https://<slug>.clerk.accounts.dev —
+          # required in every profile, there is no "local Clerk".
+          issuer-uri: ${AUTH_ISSUER_URI}
+          audiences: ${AUTH_AUDIENCE:insurly-api}
+
+# OpenAPI / Swagger UI. Paths are relative to the /api context-path, so the
+# spec lives at /api/v3/api-docs and the UI at /api/swagger-ui.html.
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+
+app:
+  # Provider-agnostic identity config — see JwtUserIdentityResolver /
+  # CompositeUserIdentityResolver (account/identity/) and
+  # docs/05-security-and-accounts.md §6.
+  auth:
+    role-claim: ${AUTH_ROLE_CLAIM:roles}
+  # Server-to-server Clerk Backend API access (never exposed to the browser) —
+  # used only by the /iam/webhooks/clerk endpoint to assign the default role on
+  # sign-up. Unlike AUTH_ISSUER_URI, these default to empty so the app still
+  # boots without them; set both in every real environment that has the
+  # webhook configured in the Clerk Dashboard, or every call it makes fails.
+  clerk:
+    secret-key: ${CLERK_SECRET_KEY:}
+    webhook-signing-secret: ${CLERK_WEBHOOK_SIGNING_SECRET:}
+    default-role: ${CLERK_DEFAULT_ROLE:user}
+  # Email / notifications — see docs/07-notifications.md.
+  # enabled=false  -> LoggingEmailSender (renders + logs, never sends).
+  # enabled=true   -> JavaMailEmailSender over spring.mail.* (MAIL_* env vars);
+  #                   MAIL_USERNAME + MAIL_PASSWORD must be set.
+  email:
+    enabled: ${EMAIL_ENABLED:false}
+    from: ${EMAIL_FROM:no-reply@insurly.example}
+    from-name: ${EMAIL_FROM_NAME:insurly}
+    # Absolute base URL for links in emails (the frontend, not the API).
+    app-base-url: ${APP_BASE_URL:http://localhost:4200}
+    # Comma-separated. Recipients of the new-quote alert and the Monday digest.
+    # When real auth lands this can be replaced by "users with the ADMIN role".
+    admin-recipients: ${EMAIL_ADMIN_RECIPIENTS:}
+    weekly-digest:
+      enabled: ${EMAIL_WEEKLY_DIGEST_ENABLED:true}
+      # Every Monday 08:00 in the zone below.
+      cron: ${EMAIL_WEEKLY_DIGEST_CRON:0 0 8 * * MON}
+      zone: ${EMAIL_WEEKLY_DIGEST_ZONE:Europe/London}

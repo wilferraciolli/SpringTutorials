@@ -1,0 +1,16 @@
+# Wraps a native binary that was ALREADY built outside Docker (by CI, or by a
+# local `./mvnw -Pnative -DskipTests native:compile`) into a minimal image.
+# Expects target/insurly-api to exist. Used by .github/workflows/native-image.yml
+# so the heavy GraalVM compile runs on a GitHub runner, not inside a Docker build.
+#
+#   ./mvnw -Pnative -DskipTests native:compile
+#   docker build -f Dockerfile.runtime -t insurly-api:native .
+
+FROM debian:12-slim
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY target/insurly-api /app/insurly-api
+EXPOSE 5001
+ENTRYPOINT ["/app/insurly-api"]

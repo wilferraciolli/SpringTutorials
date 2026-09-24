@@ -1,0 +1,11 @@
+services:
+  insurly-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: insurly-api:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${SERVER_PORT:-5001}:5001"

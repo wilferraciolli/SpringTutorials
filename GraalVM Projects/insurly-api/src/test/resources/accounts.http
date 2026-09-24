@@ -1,0 +1,366 @@
+### Phase 2 account APIs (/api/users/{userId}/**). See docs/05-security-and-accounts.md.
+### Identity is currently the DEV header seam (HeaderUserIdentityResolver):
+### every request must carry X-Insurly-User. This is replaced by a JWT before
+### anything ships. Roles are app-owned (user_role table): the FIRST request
+### for a given user bootstraps its roles from X-Insurly-Roles; after that,
+### the header is ignored and only PUT /api/admin/users/{id} can change them.
+
+### Variables
+@base = http://localhost:5001/api
+@me = {{base}}/users/me
+@user = alice
+@carId = 00000000-0000-0000-0000-000000000000
+@addressId = 00000000-0000-0000-0000-000000000000
+@licenseId = 00000000-0000-0000-0000-000000000000
+@quoteId = 00000000-0000-0000-0000-000000000000
+@guestToken = 00000000-0000-0000-0000-000000000000
+
+### ---------------------------------------------------------------- profile
+
+### My profile (JIT-creates the app_user row on first call)
+GET {{me}}
+Accept: application/json
+X-Insurly-User: {{user}}
+X-Insurly-Email: alice@example.com
+X-Insurly-Name: Alice Example
+
+### Missing identity -> 401
+GET {{me}}
+Accept: application/json
+
+### Edit my profile (name + date of birth used for quote prefill)
+PUT {{me}}
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "displayName": "Alice Example",
+  "firstName": "Alice",
+  "lastName": "Example",
+  "dateOfBirth": "1990-03-14"
+}
+
+### A partly-filled quote payload from held data (profile + latest car + latest licence)
+GET {{me}}/quotes/prefill
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### ---------------------------------------------------------------- cars
+
+### Car template (blank + _metadata)
+GET {{me}}/cars/template
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Add a car
+POST {{me}}/cars
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "make": "Toyota",
+  "model": "Corolla",
+  "year": 2019,
+  "vin": "JT2BF22K1W0123456",
+  "primaryUse": "COMMUTE",
+  "nickname": "Daily"
+}
+
+### List my cars
+GET {{me}}/cars
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### One car
+GET {{me}}/cars/{{carId}}
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Update
+PUT {{me}}/cars/{{carId}}
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "make": "Toyota",
+  "model": "Corolla Hybrid",
+  "year": 2021,
+  "primaryUse": "PLEASURE",
+  "nickname": "Weekend"
+}
+
+### Another user cannot see it -> 404
+GET {{me}}/cars/{{carId}}
+Accept: application/json
+X-Insurly-User: mallory
+
+### Delete
+DELETE {{me}}/cars/{{carId}}
+X-Insurly-User: {{user}}
+
+### ---------------------------------------------------------------- addresses
+
+### Add an address (primary)
+POST {{me}}/addresses
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "label": "Home",
+  "line1": "12 Baker Street",
+  "city": "London",
+  "region": "Greater London",
+  "postalCode": "NW1 6XE",
+  "countryCode": "GB",
+  "primary": true
+}
+
+### List
+GET {{me}}/addresses
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Update
+PUT {{me}}/addresses/{{addressId}}
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "label": "Home",
+  "line1": "12 Baker Street",
+  "line2": "Flat 2",
+  "city": "London",
+  "postalCode": "NW1 6XE",
+  "countryCode": "GB",
+  "primary": true
+}
+
+### Delete
+DELETE {{me}}/addresses/{{addressId}}
+X-Insurly-User: {{user}}
+
+### ---------------------------------------------------------------- phones
+
+### Add a phone
+POST {{me}}/phones
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "label": "Mobile",
+  "number": "+44 7700 900123",
+  "primary": true
+}
+
+### List
+GET {{me}}/phones
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Delete
+DELETE {{me}}/phones/00000000-0000-0000-0000-000000000000
+X-Insurly-User: {{user}}
+
+### ---------------------------------------------------------------- licences
+
+### Add a licence (number stored encrypted, returned masked)
+POST {{me}}/licenses
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "licenseNumber": "EXAMP123456AB7CD",
+  "status": "VALID",
+  "issuingRegion": "DVLA",
+  "issuedOn": "2015-06-01",
+  "expiresOn": "2035-06-01",
+  "yearsHeld": 10
+}
+
+### List (masked)
+GET {{me}}/licenses
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### One (full number)
+GET {{me}}/licenses/{{licenseId}}
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Delete
+DELETE {{me}}/licenses/{{licenseId}}
+X-Insurly-User: {{user}}
+
+### ---------------------------------------------------------------- quotes
+
+### My quotes (a POST /api/quotes/car made with X-Insurly-User set is stamped;
+### stamping is wired in step 5 of the rollout — until then, use claim below)
+GET {{me}}/quotes
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### One of my quotes
+GET {{me}}/quotes/{{quoteId}}
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Claim a guest quote (id + guestToken from POST /api/quotes/car)
+POST {{me}}/quotes/claim
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: {{user}}
+
+{
+  "quoteId": "{{quoteId}}",
+  "guestToken": "{{guestToken}}"
+}
+
+### ---------------------------------------------------------------- account
+
+### Delete my account (cascades cars/addresses/licences; quotes -> guest)
+DELETE {{me}}
+X-Insurly-User: {{user}}
+
+###
+
+### ================================================================
+### ADMIN-ON-BEHALF-OF  (/api/users/{userId}/**, {userId} = a real user id)
+### Any authenticated user's own data uses "me" above; an admin can reach
+### the same endpoints for ANY user by id — self-or-admin, via @PreAuthorize.
+### ================================================================
+@onBehalf = {{base}}/users/{{custId}}
+@custId = 00000000-0000-0000-0000-000000000000
+
+### Non-owner, non-admin -> 403
+GET {{onBehalf}}/cars
+Accept: application/json
+X-Insurly-User: {{user}}
+
+### Add a car to another user's account (requires the ADMIN role)
+POST {{onBehalf}}/cars
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: boss
+X-Insurly-Roles: admin
+
+{ "make": "Toyota", "model": "Corolla", "year": 2019, "primaryUse": "COMMUTE" }
+
+### Prefill for a quote-on-behalf
+GET {{onBehalf}}/quotes/prefill
+Accept: application/json
+X-Insurly-User: boss
+X-Insurly-Roles: admin
+
+### Generate a quote on the customer's behalf
+POST {{onBehalf}}/quotes
+Content-Type: application/json
+Accept: application/json
+X-Insurly-User: boss
+X-Insurly-Roles: admin
+
+{
+  "driver":   { "firstName": "Jordan", "lastName": "Rivera", "dateOfBirth": "1990-03-14", "yearsLicensed": 10, "licenseStatus": "VALID" },
+  "vehicle":  { "make": "Toyota", "model": "Corolla", "year": 2019, "primaryUse": "COMMUTE" },
+  "history":  { "accidentsLast5Years": 0, "violationsLast5Years": 1 },
+  "coverage": { "liabilityLimit": "50/100/50", "collision": true, "comprehensive": true, "deductible": 500 }
+}
+
+### Their quotes
+GET {{onBehalf}}/quotes
+Accept: application/json
+X-Insurly-User: boss
+X-Insurly-Roles: admin
+
+###
+
+### ================================================================
+### ADMIN CONSOLE  (/api/admin/**)  — every call needs the admin role.
+### Customer records, roles, providers, settings, and the dashboard.
+### ================================================================
+@admin = http://localhost:5001/api/admin
+@adminHdrs = X-Insurly-User: boss
+
+### Non-admin -> 403
+GET {{admin}}/dashboard
+X-Insurly-User: {{user}}
+
+### Dashboard (totals by status, expiring-soon, user counts, recent feed)
+GET {{admin}}/dashboard
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+### List every customer
+GET {{admin}}/users
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+### Create an admin-managed customer (no email is sent)
+POST {{admin}}/users
+Content-Type: application/json
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+{
+  "email": "jordan@example.com",
+  "firstName": "Jordan",
+  "lastName": "Rivera",
+  "dateOfBirth": "1990-03-14"
+}
+
+### One customer (with sub-collection counts + links)
+GET {{admin}}/users/{{custId}}
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+### Edit a customer's profile and grant a role (works for self-service too)
+PUT {{admin}}/users/{{custId}}
+Content-Type: application/json
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+{
+  "email": "jordan@example.com",
+  "firstName": "Jordan",
+  "lastName": "Rivera",
+  "dateOfBirth": "1990-03-14",
+  "roles": ["SALES_ADMIN"]
+}
+
+###
+
+### ---------------------------------------------------- system settings
+### Public read (no auth) — the frontend uses this to format amounts / dates.
+GET {{base}}/system-settings
+Accept: application/json
+
+### Admin read — same values plus the selectable option lists in _metadata.
+GET {{admin}}/system-settings
+Accept: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+### Admin update — timezone is any IANA zone id; language / currency are enum names.
+PUT {{admin}}/system-settings
+Content-Type: application/json
+{{adminHdrs}}
+X-Insurly-Roles: admin
+
+{
+  "timezone": "America/Sao_Paulo",
+  "language": "PT_BR",
+  "currency": "BRL"
+}
+
+###

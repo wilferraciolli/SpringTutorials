@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <body
+    th:replace="~{email/_layout :: page('Monday digest', ${m.openQuotes() + ' open quote(s) to chase'}, ~{::content})}"
+  >
+    <div th:fragment="content">
+      <h1 style="margin: 0 0 4px; font-size: 20px; color: #17171c; letter-spacing: -0.01em">Monday digest</h1>
+      <p style="margin: 0 0 18px; color: #6b6b76" th:text="${m.weekRange()}">25 Aug – 1 Sep 2026</p>
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 22px">
+        <tr>
+          <td width="25%" style="padding: 12px; background: #f7f5f1; border: 1px solid #e2ddd4; text-align: center">
+            <div style="font-size: 20px; font-weight: 700; color: #17171c" th:text="${m.newQuotes()}">18</div>
+            <div style="font-size: 11px; color: #6b6b76">New quotes</div>
+          </td>
+          <td width="25%" style="padding: 12px; background: #f7f5f1; border: 1px solid #e2ddd4; text-align: center">
+            <div style="font-size: 20px; font-weight: 700; color: #17171c" th:text="${m.completedQuotes()}">16</div>
+            <div style="font-size: 11px; color: #6b6b76">Completed</div>
+          </td>
+          <td width="25%" style="padding: 12px; background: #eef0ff; border: 1px solid #4f46e5; text-align: center">
+            <div style="font-size: 20px; font-weight: 700; color: #17171c" th:text="${m.openQuotes()}">31</div>
+            <div style="font-size: 11px; color: #4f46e5">Open</div>
+          </td>
+          <td width="25%" style="padding: 12px; background: #f7f5f1; border: 1px solid #e2ddd4; text-align: center">
+            <div style="font-size: 20px; font-weight: 700; color: #17171c" th:text="${m.expiringThisWeek()}">4</div>
+            <div style="font-size: 11px; color: #6b6b76">Expiring ≤7d</div>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 8px; font-size: 12px; font-weight: 700; color: #17171c; text-transform: uppercase; letter-spacing: 0.06em">
+        Open quotes — priced, not yet converted
+      </p>
+      <p th:if="${m.openRows().isEmpty()}" style="margin: 0 0 20px; color: #6b6b76">Nothing open right now.</p>
+      <table
+        th:unless="${m.openRows().isEmpty()}"
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        style="margin-bottom: 22px; font-size: 13px"
+      >
+        <tr style="color: #6b6b76">
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Ref</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Customer</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Created</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Age</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Expires in</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4; text-align: right">Standard</td>
+        </tr>
+        <tr th:each="row : ${m.openRows()}">
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c" th:text="${row.quoteRef()}">Q-XXXX</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c" th:text="${row.customer()}">Guest</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #6b6b76" th:text="${row.createdAt()}">25 Aug</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #6b6b76" th:text="${row.ageDays()} + 'd'">3d</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #6b6b76" th:text="${row.daysToExpiry()} + 'd'">27d</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c; text-align: right" th:text="${row.premiumStandard()}">£864</td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 8px; font-size: 12px; font-weight: 700; color: #17171c; text-transform: uppercase; letter-spacing: 0.06em">
+        Expiring in the next 7 days
+      </p>
+      <p th:if="${m.expiringRows().isEmpty()}" style="margin: 0 0 20px; color: #6b6b76">Nothing expiring this week.</p>
+      <table
+        th:unless="${m.expiringRows().isEmpty()}"
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        style="margin-bottom: 22px; font-size: 13px"
+      >
+        <tr style="color: #6b6b76">
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Ref</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Customer</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4">Expires in</td>
+          <td style="padding: 6px 8px; border-bottom: 2px solid #e2ddd4; text-align: right">Standard</td>
+        </tr>
+        <tr th:each="row : ${m.expiringRows()}">
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c" th:text="${row.quoteRef()}">Q-XXXX</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c" th:text="${row.customer()}">Guest</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #6b6b76" th:text="${row.daysToExpiry()} + 'd'">2d</td>
+          <td style="padding: 6px 8px; border-bottom: 1px solid #e2ddd4; color: #17171c; text-align: right" th:text="${row.premiumStandard()}">£712</td>
+        </tr>
+      </table>
+
+      <a
+        th:href="${m.consoleUrl()}"
+        style="display: inline-block; background: #4f46e5; color: #ffffff; text-decoration: none; padding: 11px 20px; border-radius: 8px; font-weight: 600; font-size: 14px"
+        >Open the dashboard</a
+      >
+    </div>
+  </body>
+</html>

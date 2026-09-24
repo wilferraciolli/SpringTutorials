@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+
+server:
+  # Container PaaS platforms (Cloud Run, Render, Koyeb, Fly) inject the port to
+  # listen on as $PORT. Fall back to SERVER_PORT, then 5001 for the plain
+  # docker-compose deploy.
+  port: ${PORT:${SERVER_PORT:5001}}
+
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN}
+
+# API docs are off in prod unless explicitly enabled.
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS_ENABLED:false}
+  swagger-ui:
+    enabled: ${SWAGGER_UI_ENABLED:false}
+
+logging:
+  level:
+    root: INFO
+    com.wiltech.insurly: INFO

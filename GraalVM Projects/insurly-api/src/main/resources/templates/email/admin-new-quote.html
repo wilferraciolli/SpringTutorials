@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <body
+    th:replace="~{email/_layout :: page('New quote request', ${m.driverName() + ' requested a quote — ' + m.premiumStandard() + '/yr'}, ~{::content})}"
+  >
+    <div th:fragment="content">
+      <h1 style="margin: 0 0 4px; font-size: 20px; color: #17171c; letter-spacing: -0.01em">
+        New quote request
+      </h1>
+      <p style="margin: 0 0 18px; color: #6b6b76">
+        <strong th:text="${m.driverName()}">Someone</strong> just requested a car insurance quote
+        (<span th:text="${m.customerType()}">Guest</span>).
+      </p>
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 18px">
+        <tr>
+          <td style="padding: 4px 0; color: #6b6b76; width: 130px">Reference</td>
+          <td style="padding: 4px 0; color: #17171c" th:text="${m.quoteRef()}">Q-XXXX</td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 0; color: #6b6b76">Requested</td>
+          <td style="padding: 4px 0; color: #17171c" th:text="${m.createdAt()}">1 Sep 2026</td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 0; color: #6b6b76">Valid until</td>
+          <td style="padding: 4px 0; color: #17171c" th:text="${m.expiresAt()}">1 Oct 2026</td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #17171c; text-transform: uppercase; letter-spacing: 0.06em">
+        Driver
+      </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px">
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76; width: 130px">Name</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.driverName()}">Jordan Rivera</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Age</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.driverAge()}">34</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Years licensed</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.yearsLicensed()}">12</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Licence status</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.licenseStatus()}">Valid</td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #17171c; text-transform: uppercase; letter-spacing: 0.06em">
+        Vehicle &amp; history
+      </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px">
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76; width: 130px">Vehicle</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.vehicle()}">2019 Toyota Corolla</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Primary use</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.primaryUse()}">Commute</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Accidents (5 yr)</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.accidents()}">0</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Violations (5 yr)</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.violations()}">1</td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #17171c; text-transform: uppercase; letter-spacing: 0.06em">
+        Cover chosen
+      </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px">
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76; width: 130px">Liability limit</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.liabilityLimit()}">50/100/50</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Collision</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.collision()} ? 'Yes' : 'No'">Yes</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Comprehensive</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.comprehensive()} ? 'Yes' : 'No'">Yes</td>
+        </tr>
+        <tr>
+          <td style="padding: 3px 0; color: #6b6b76">Excess</td>
+          <td style="padding: 3px 0; color: #17171c" th:text="${m.deductible()}">£500</td>
+        </tr>
+      </table>
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 22px">
+        <tr>
+          <td width="33%" style="padding: 12px; background: #f7f5f1; border: 1px solid #e2ddd4; text-align: center">
+            <div style="font-size: 11px; color: #6b6b76; text-transform: uppercase; letter-spacing: 0.06em">Basic</div>
+            <div style="font-size: 18px; font-weight: 700; color: #17171c" th:text="${m.premiumBasic()}">£576</div>
+            <div style="font-size: 11px; color: #6b6b76">/yr</div>
+          </td>
+          <td width="34%" style="padding: 12px; background: #eef0ff; border: 1px solid #4f46e5; text-align: center">
+            <div style="font-size: 11px; color: #4f46e5; text-transform: uppercase; letter-spacing: 0.06em">Standard</div>
+            <div style="font-size: 18px; font-weight: 700; color: #17171c" th:text="${m.premiumStandard()}">£768</div>
+            <div style="font-size: 11px; color: #6b6b76">/yr</div>
+          </td>
+          <td width="33%" style="padding: 12px; background: #f7f5f1; border: 1px solid #e2ddd4; text-align: center">
+            <div style="font-size: 11px; color: #6b6b76; text-transform: uppercase; letter-spacing: 0.06em">Premium</div>
+            <div style="font-size: 18px; font-weight: 700; color: #17171c" th:text="${m.premiumPremium()}">£1,014</div>
+            <div style="font-size: 11px; color: #6b6b76">/yr</div>
+          </td>
+        </tr>
+      </table>
+
+      <a
+        th:href="${m.consoleUrl()}"
+        style="display: inline-block; background: #4f46e5; color: #ffffff; text-decoration: none; padding: 11px 20px; border-radius: 8px; font-weight: 600; font-size: 14px"
+        >Open in admin console</a
+      >
+    </div>
+  </body>
+</html>
